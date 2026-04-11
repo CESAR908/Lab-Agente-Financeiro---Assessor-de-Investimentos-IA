@@ -115,31 +115,39 @@ if st.session_state.cliente_id:
         )
         st.session_state.bot_is_thinking = False
 
-    # ----------------------------------------------------------
-    # Ações rápidas
-    # ----------------------------------------------------------
-    st.divider()
-    st.subheader("⚡ Ações Rápidas")
-    col1, col2, col3 = st.columns(3)
+  # ----------------------------------------------------------
+# Ações rápidas
+# ----------------------------------------------------------
+st.divider()
+st.subheader("⚡ Ações Rápidas")
+col1, col2, col3 = st.columns(3)
 
-    def _pergunta_rapida(texto: str):
-        st.session_state.historico_chat.append(
-            {"tipo": "usuario", "conteudo": texto, "timestamp": datetime.now()}
-        )
-        st.session_state.bot_is_thinking = True
-        resp = st.session_state.agente.processar_pergunta(
-            pergunta=texto,
-            cliente_id=st.session_state.cliente_id,
-            base_conhecimento=st.session_state.base_conhecimento,
-        )
-        st.session_state.historico_chat.append(
-            {"tipo": "assistente", "conteudo": resp, "timestamp": datetime.now()}
-        )
-        st.session_state.bot_is_thinking = False
+def _pergunta_rapida(texto: str):
+    """Envia a pergunta “rápida” ao agente e grava a conversa."""
+    st.session_state.historico_chat.append(
+        {"tipo": "usuario", "conteudo": texto, "timestamp": datetime.now()}
+    )
+    st.session_state.bot_is_thinking = True
+    resposta = st.session_state.agente.processar_pergunta(
+        pergunta=texto,
+        cliente_id=st.session_state.cliente_id,
+        base_conhecimento=st.session_state.base_conhecimento,
+    )
+    st.session_state.historico_chat.append(
+        {"tipo": "assistente", "conteudo": resposta, "timestamp": datetime.now()}
+    )
+    st.session_state.bot_is_thinking = False
 
-    with col1:
-        if st.button("📊 Análise de Carteira", disabled=st.session_state.bot_is_thinking):
-            _pergunta_rapida("Faça uma análise completa da minha carteira atual")
-    with col2:
-        if st.button("💡 Recomendação", disabled=st.session_state.bot_is_thinking):
-            _pergunta_rapida("Qual é a melhor alocação para
+
+with col1:
+    if st.button("📊 Análise de Carteira", disabled=st.session_state.bot_is_thinking):
+        _pergunta_rapida("Faça uma análise completa da minha carteira atual")
+
+with col2:
+    if st.button("💡 Recomendação", disabled=st.session_state.bot_is_thinking):
+        # ← string **inteira** e fechada corretamente
+        _pergunta_rapida("Qual é a melhor alocação para meu perfil?")
+
+with col3:
+    if st.button("🗑️ Limpar", disabled=st.session_state.bot_is_thinking):
+        st.session_state.historico_chat = []
