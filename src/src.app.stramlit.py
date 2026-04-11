@@ -1,4 +1,4 @@
-src/__init__.py
+# src/app.py
 
 import streamlit as st
 from datetime import datetime
