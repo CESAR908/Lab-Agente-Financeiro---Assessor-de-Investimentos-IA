@@ -1717,3 +1717,1352 @@ PRÓXIMAS AVALIAÇÕES Data: […] Foco: […]
 📄 docs/05-pitch.md
 
 
+📄 data/transacoes.csv
+
+data,tipo,produto,valor,rentabilidade_percentual,status
+2024-01-15,compra,Tesouro Direto IPCA+ 2035,5000,0,ativo
+2024-02-10,compra,Fundo Multimercado XYZ,3000,0,ativo
+2024-03-05,compra,ETF IBOVESPA,2000,0,ativo
+2024-04-20,venda,Fundo Multimercado XYZ,3150,5.0,concluído
+2024-05-12,compra,Fundo Renda Fixa ABC,4000,0,ativo
+2024-06-01,compra,Ações PETR4,1500,0,ativo
+2024-07-15,venda,Ações PETR4,1650,10.0,concluído
+2024-08-10,compra,CDB Banco XYZ,5000,0,ativo
+2024-09-05,compra,LCI Banco ABC,3000,0,ativo
+2024-10-20,venda,Tesouro Direto IPCA+ 2035,5200,4.0,concluído
+2024-11-08,compra,ETF IBOVESPA,2500,0,ativo
+2024-12-01,compra,Fundo Multimercado XYZ,2000,0,ativo
+2024-12-15,venda,Fundo Renda Fixa ABC,4100,2.5,concluído
+2025-01-10,compra,Tesouro Direto Selic,3000,0,ativo
+2025-02-05,compra,CDB Banco ABC,2000,0,ativo
+2025-03-12,venda,ETF IBOVESPA,5100,2.0,concluído
+2025-04-01,compra,Fundo Multimercado XYZ,3500,0,ativo
+2025-04-15,compra,LCI Banco XYZ,2500,0,ativo
+2025-05-20,venda,CDB Banco XYZ,5150,3.0,concluído
+2025-06-10,compra,Tesouro Direto IPCA+ 2035,4000,0,ativo
+
+📄 data/historico_atendimento.csv
+
+data,assunto,resumo,recomendacao,resultado
+2023-12-01,Consulta Inicial,Cliente novo quer começar a investir,Perfil conservador - Tesouro Direto,Aceitou recomendação
+2023-12-15,Dúvida Produto,Perguntou sobre Fundos Multimercado,Explicou risco/retorno,Investiu R$ 3.000
+2024-01-10,Rebalanceamento,Quer diversificar além de renda fixa,Sugeriu 30% em ações,Comprou ETF IBOVESPA
+2024-02-20,Dúvida Imposto,Perguntou sobre IR em renda fixa,Explicou alíquotas regressivas,Entendeu estrutura
+2024-03-15,Análise Carteira,Revisão de posições,Mantém estratégia atual,Satisfeito com alocação
+2024-04-10,Venda Parcial,Decidiu vender Fundo Multimercado,Realizou ganho de 5%,Reinvestiu em CDB
+2024-05-20,Dúvida Produto,Perguntou sobre LCI,Explicou isenção de IR,Comprou R$ 3.000
+2024-06-15,Análise Risco,Questionou volatilidade de ações,Reafirmou perfil moderado,Mantém posição
+2024-07-10,Venda Parcial,Vendeu ações com ganho de 10%,Sugeriu realização de lucro,Aceitou sugestão
+2024-08-20,Consulta Produto,Perguntou sobre CDB vs Tesouro,Comparou rentabilidade,Investiu em CDB
+2024-09-15,Dúvida Estratégia,Como alocar novo aporte,Sugeriu manter proporção,Aplicou R$ 2.500
+2024-10-05,Análise Performance,Como está indo meu dinheiro,Mostrou ganhos de 3.7%,Motivado a continuar
+2024-11-12,Dúvida Produto,Perguntou sobre Tesouro Selic,Explicou diferença com IPCA+,Comprou Selic
+2024-12-01,Planejamento,Quer investir mais em 2025,Sugeriu aumentar aporte mensal,Comprometido com plano
+2025-01-20,Dúvida Volatilidade,Assustado com queda de 8%,Explicou volatilidade normal,Manteve posição
+2025-02-10,Consulta Produto,Novo produto no mercado,Analisou e recomendou,Investigará mais
+2025-03-15,Rebalanceamento,Quer revisar alocação,Sugeriu ajustes menores,Implementou mudanças
+2025-04-05,Análise Carteira,Check-up geral,Performance acima do esperado,Muito satisfeito
+2025-05-20,Planejamento Fiscal,Como otimizar IR,Sugeriu LCI e Tesouro,Implementará estratégia
+2025-06-10,Consulta Geral,Próximos passos,Sugeriu aumentar diversificação,Aberto a novas ideias
+
+📄 data/perfil_investidor.json
+
+{
+  "cliente_id": "CLI001",
+  "nome": "João Silva",
+  "data_cadastro": "2023-12-01",
+  "email": "joao.silva@email.com",
+  "telefone": "(11) 98765-4321",
+  "dados_pessoais": {
+    "idade": 35,
+    "genero": "Masculino",
+    "profissao": "Engenheiro de Software",
+    "estado_civil": "Casado",
+    "dependentes": 2,
+    "cidade": "São Paulo",
+    "estado": "SP"
+  },
+  "situacao_financeira": {
+    "renda_mensal": 8000,
+    "renda_anual": 96000,
+    "patrimonio_total": 150000,
+    "disponivel_investir": 50000,
+    "dividas": 0,
+    "fundo_emergencia": 15000,
+    "fundo_emergencia_meses": 2
+  },
+  "objetivos_investimento": [
+    {
+      "objetivo": "Aposentadoria",
+      "prazo_anos": 30,
+      "valor_alvo": 500000,
+      "prioridade": "alta",
+      "status": "em_progresso"
+    },
+    {
+      "objetivo": "Educação dos filhos",
+      "prazo_anos": 10,
+      "valor_alvo": 100000,
+      "prioridade": "alta",
+      "status": "em_progresso"
+    },
+    {
+      "objetivo": "Viagem internacional",
+      "prazo_anos": 2,
+      "valor_alvo": 30000,
+      "prioridade": "média",
+      "status": "planejamento"
+    }
+  ],
+  "perfil_risco": {
+    "classificacao": "moderado",
+    "tolerancia_queda_percentual": 15,
+    "experiencia_investimento": "intermediário",
+    "conhecimento_financeiro": "bom",
+    "conforto_volatilidade": "moderado",
+    "primeira_vez_investindo": false,
+    "anos_experiencia": 2
+  },
+  "preferencias": {
+    "produtos_preferidos": [
+      "Tesouro Direto",
+      "Fundos Multimercado",
+      "ETF"
+    ],
+    "produtos_evitar": [
+      "Derivativos",
+      "Alavancagem",
+      "Criptomoedas"
+    ],
+    "frequencia_rebalanceamento": "semestral",
+    "comunicacao_preferida": "email",
+    "frequencia_contato": "mensal"
+  },
+  "alocacao_atual": {
+    "renda_fixa": 60,
+    "renda_variavel": 30,
+    "alternativas": 10,
+    "valor_total_investido": 23500
+  },
+  "historico_performance": {
+    "rentabilidade_ano_anterior": 5.2,
+    "rentabilidade_acumulada": 3.7,
+    "benchmark": "CDI + 2%",
+    "performance_vs_benchmark": "abaixo"
+  },
+  "composicao_carteira": {
+    "Tesouro Direto IPCA+ 2035": {
+      "valor": 9000,
+      "percentual": 38.3,
+      "rentabilidade": 4.0
+    },
+    "Fundo Multimercado XYZ": {
+      "valor": 5000,
+      "percentual": 21.3,
+      "rentabilidade": 5.0
+    },
+    "ETF IBOVESPA": {
+      "valor": 4500,
+      "percentual": 19.1,
+      "rentabilidade": 2.0
+    },
+    "CDB Banco XYZ": {
+      "valor": 5000,
+      "percentual": 21.3,
+      "rentabilidade": 3.0
+    }
+  },
+  "risk_score": 45,
+  "score_fidelidade": 85,
+  "ultima_atualizacao": "2025-06-10"
+}
+
+📄 data/produtos_financeiros.json
+
+{
+  "produtos": [
+    {
+      "id": "PROD001",
+      "nome": "Tesouro Direto IPCA+ 2035",
+      "categoria": "Renda Fixa",
+      "subcategoria": "Tesouro",
+      "descricao": "Título público indexado à inflação com vencimento em 2035",
+      "rentabilidade_esperada": "IPCA + 5.5%",
+      "rentabilidade_historica_12m": 6.2,
+      "rentabilidade_historica_24m": 5.8,
+      "risco": "muito_baixo",
+      "risco_score": 10,
+      "liquidez": "alta",
+      "liquidez_dias": 1,
+      "aplicacao_minima": 100,
+      "taxa_administracao": 0,
+      "taxa_custodia": 0.25,
+      "imposto_renda": "regressivo",
+      "prazo_minimo": "até vencimento",
+      "prazo_recomendado_anos": 15,
+      "publico_alvo": [
+        "conservador",
+        "moderado"
+      ],
+      "vantagens": [
+        "Segurança (garantido pelo governo)",
+        "Sem taxa de administração",
+        "Proteção contra inflação",
+        "Liquidez diária",
+        "Imposto regressivo"
+      ],
+      "desvantagens": [
+        "Rentabilidade menor que outros produtos",
+        "Risco de taxa de juros",
+        "Prazo longo até vencimento"
+      ],
+      "quando_recomendar": "Cliente com objetivo de longo prazo e baixa tolerância ao risco",
+      "quando_evitar": "Cliente com objetivo de curto prazo ou alta tolerância ao risco",
+      "correlacao_mercado": 0.3,
+      "volatilidade_anual": 2.5
+    },
+    {
+      "id": "PROD002",
+      "nome": "Fundo Multimercado XYZ",
+      "categoria": "Fundos",
+      "subcategoria": "Multimercado",
+      "descricao": "Fundo que investe em múltiplos ativos (ações, renda fixa, derivativos)",
+      "rentabilidade_esperada": "CDI + 3%",
+      "rentabilidade_historica_12m": 8.5,
+      "rentabilidade_historica_24m": 7.2,
+      "risco": "medio",
+      "risco_score": 50,
+      "liquidez": "alta",
+      "liquidez_dias": 1,
+      "aplicacao_minima": 1000,
+      "taxa_administracao": 1.2,
+      "taxa_performance": 0,
+      "imposto_renda": "ordinario",
+      "prazo_minimo": "nenhum",
+      "prazo_recomendado_anos": 5,
+      "publico_alvo": [
+        "moderado",
+        "agressivo"
+      ],
+      "vantagens": [
+        "Diversificação automática",
+        "Gestão profissional",
+        "Flexibilidade de alocação",
+        "Potencial de retorno maior",
+        "Rebalanceamento automático"
+      ],
+      "desvantagens": [
+        "Taxa de administração de 1.2%",
+        "Risco moderado",
+        "Menos previsível que renda fixa",
+        "Imposto ordinário"
+      ],
+      "quando_recomendar": "Cliente com perfil moderado buscando diversificação",
+      "quando_evitar": "Cliente muito conservador ou muito agressivo",
+      "correlacao_mercado": 0.6,
+      "volatilidade_anual": 6.5
+    },
+    {
+      "id": "PROD003",
+      "nome": "ETF IBOVESPA",
+      "categoria": "Renda Variável",
+      "subcategoria": "ETF",
+      "descricao": "Fundo que replica o índice IBOVESPA (principais ações da bolsa)",
+      "rentabilidade_esperada": "Acompanha IBOVESPA",
+      "rentabilidade_historica_12m": 12.3,
+      "rentabilidade_historica_24m": 8.7,
+      "risco": "alto",
+      "risco_score": 75,
+      "liquidez": "muito_alta",
+      "liquidez_dias": 1,
+      "aplicacao_minima": 100,
+      "taxa_administracao": 0.15,
+      "taxa_performance": 0,
+      "imposto_renda": "ordinario",
+      "prazo_minimo": "nenhum",
+      "prazo_recomendado_anos": 10,
+      "publico_alvo": [
+        "moderado",
+        "agressivo"
+      ],
+      "vantagens": [
+        "Baixíssima taxa de administração",
+        "Diversificação em 80+ ações",
+        "Liquidez muito alta",
+        "Potencial de retorno alto",
+        "Transparência total"
+      ],
+      "desvantagens": [
+        "Volatilidade alta",
+        "Risco de mercado",
+        "Requer tolerância ao risco",
+        "Imposto ordinário"
+      ],
+      "quando_recomendar": "Cliente com objetivo de longo prazo e tolerância ao risco moderada/alta",
+      "quando_evitar": "Cliente conservador ou com objetivo de curto prazo",
+      "correlacao_mercado": 0.95,
+      "volatilidade_anual": 15.2
+    },
+    {
+      "id": "PROD004",
+      "nome": "CDB Banco XYZ",
+      "categoria": "Renda Fixa",
+      "subcategoria": "CDB",
+      "descricao": "Certificado de Depósito Bancário com rentabilidade prefixada",
+      "rentabilidade_esperada": "12% ao ano",
+      "rentabilidade_historica_12m": 11.8,
+      "rentabilidade_historica_24m": 10.5,
+      "risco": "baixo",
+      "risco_score": 25,
+      "liquidez": "media",
+      "liquidez_dias": 30,
+      "aplicacao_minima": 1000,
+      "taxa_administracao": 0,
+      "taxa_performance": 0,
+      "imposto_renda": "regressivo",
+      "prazo_minimo": "30 dias",
+      "prazo_recomendado_anos": 2,
+      "publico_alvo": [
+        "conservador",
+        "moderado"
+      ],
+      "vantagens": [
+        "Rentabilidade previsível",
+        "Proteção do FGC até R$ 250 mil",
+        "Sem taxa de administração",
+        "Imposto regressivo",
+        "Seguro"
+      ],
+      "desvantagens": [
+        "Liquidez limitada",
+        "Rentabilidade menor que ações",
+        "Risco de crédito do banco",
+        "Prazo mínimo de 30 dias"
+      ],
+      "quando_recomendar": "Cliente buscando renda fixa com melhor rentabilidade que Tesouro",
+      "quando_evitar": "Cliente que precisa de liquidez imediata",
+      "correlacao_mercado": 0.2,
+      "volatilidade_anual": 1.8
+    },
+    {
+      "id": "PROD005",
+      "nome": "LCI Banco ABC",
+      "categoria": "Renda Fixa",
+      "subcategoria": "LCI",
+      "descricao": "Letra de Crédito Imobiliário - isenta de IR",
+      "rentabilidade_esperada": "100% do CDI",
+      "rentabilidade_historica_12m": 10.5,
+      "rentabilidade_historica_24m": 9.8,
+      "risco": "baixo",
+      "risco_score": 30,
+      "liquidez": "baixa",
+      "liquidez_dias": 90,
+      "aplicacao_minima": 1000,
+      "taxa_administracao": 0,
+      "taxa_performance": 0,
+      "imposto_renda": "isento",
+      "prazo_minimo": "90 dias",
+      "prazo_recomendado_anos": 3,
+      "publico_alvo": [
+        "conservador",
+        "moderado"
+      ],
+      "vantagens": [
+        "Isenta de Imposto de Renda",
+        "Proteção do FGC até R$ 250 mil",
+        "Rentabilidade interessante",
+        "Segura e previsível",
+        "Ideal para faixa alta de IR"
+      ],
+      "desvantagens": [
+        "Liquidez baixa",
+        "Prazo mínimo de 90 dias",
+        "Rentabilidade menor que CDB",
+        "Risco de crédito do banco"
+      ],
+      "quando_recomendar": "Cliente em faixa alta de IR buscando renda fixa isenta",
+      "quando_evitar": "Cliente que precisa de liquidez",
+      "correlacao_mercado": 0.1,
+      "volatilidade_anual": 1.5
+    },
+    {
+      "id": "PROD006",
+      "nome": "Tesouro Direto Selic",
+      "categoria": "Renda Fixa",
+      "subcategoria": "Tesouro",
+      "descricao": "Título público que acompanha a taxa Selic",
+      "rentabilidade_esperada": "Acompanha Selic",
+      "rentabilidade_historica_12m": 10.5,
+      "rentabilidade_historica_24m": 9.2,
+      "risco": "muito_baixo",
+      "risco_score": 5,
+      "liquidez": "muito_alta",
+      "liquidez_dias": 1,
+      "aplicacao_minima": 100,
+      "taxa_administracao": 0,
+      "taxa_custodia": 0.25,
+      "imposto_renda": "regressivo",
+      "prazo_minimo": "nenhum",
+      "prazo_recomendado_anos": 1,
+      "publico_alvo": [
+        "conservador",
+        "moderado"
+      ],
+      "vantagens": [
+        "Liquidez imediata",
+        "Sem taxa de administração",
+        "Segurança máxima",
+        "Imposto regressivo",
+        "Ideal para fundo de emergência"
+      ],
+      "desvantagens": [
+        "Rentabilidade menor que outros produtos",
+        "Não protege contra inflação",
+        "Risco de taxa de juros"
+      ],
+      "quando_recomendar": "Cliente buscando segurança máxima e liquidez",
+      "quando_evitar": "Cliente com objetivo de longo prazo",
+      "correlacao_mercado": 0.05,
+      "volatilidade_anual": 0.5
+    },
+    {
+      "id": "PROD007",
+      "nome": "Fundo Renda Fixa ABC",
+      "categoria": "Fundos",
+      "subcategoria": "Renda Fixa",
+      "descricao": "Fundo que investe em títulos de renda fixa (Tesouro, CDB, LCI)",
+      "rentabilidade_esperada": "CDI + 1.5%",
+      "rentabilidade_historica_12m": 9.2,
+      "rentabilidade_historica_24m": 8.5,
+      "risco": "baixo",
+      "risco_score": 20,
+      "liquidez": "alta",
+      "liquidez_dias": 1,
+      "aplicacao_minima": 500,
+      "taxa_administracao": 0.5,
+      "taxa_performance": 0,
+      "imposto_renda": "ordinario",
+      "prazo_minimo": "nenhum",
+      "prazo_recomendado_anos": 3,
+      "publico_alvo": [
+        "conservador",
+        "moderado"
+      ],
+      "vantagens": [
+        "Diversificação em renda fixa",
+        "Gestão profissional",
+        "Taxa baixa",
+        "Liquidez diária",
+        "Seguro"
+      ],
+      "desvantagens": [
+        "Taxa de administração de 0.5%",
+        "Rentabilidade previsível",
+        "Imposto ordinário"
+      ],
+      "quando_recomendar": "Cliente buscando renda fixa diversificada",
+      "quando_evitar": "Cliente muito conservador (prefere Tesouro)",
+      "correlacao_mercado": 0.15,
+      "volatilidade_anual": 2.0
+    },
+    {
+      "id": "PROD008",
+      "nome": "Fundo de Ações Agressivo",
+      "categoria": "Fundos",
+      "subcategoria": "Ações",
+      "descricao": "Fundo que investe em ações de crescimento e pequenas empresas",
+      "rentabilidade_esperada": "IBOVESPA + 5%",
+      "rentabilidade_historica_12m": 18.5,
+      "rentabilidade_historica_24m": 12.3,
+      "risco": "muito_alto",
+      "risco_score": 90,
+      "liquidez": "media",
+      "liquidez_dias": 5,
+      "aplicacao_minima": 1000,
+      "taxa_administracao": 1.5,
+      "taxa_performance": 0.5,
+      "imposto_renda": "ordinario",
+      "prazo_minimo": "nenhum",
+      "prazo_recomendado_anos": 15,
+      "publico_alvo": [
+        "agressivo"
+      ],
+      "vantagens": [
+        "Potencial de retorno muito alto",
+        "Gestão ativa",
+        "Diversificação em ações",
+        "Acesso a empresas de crescimento"
+      ],
+      "desvantagens": [
+        "Volatilidade muito alta",
+        "Risco de perda significativa",
+        "Taxa de administração alta",
+        "Imposto ordinário",
+        "Requer tolerância ao risco"
+      ],
+      "quando_recomendar": "Cliente agressivo com objetivo de 15+ anos",
+      "quando_evitar": "Cliente conservador ou com objetivo de curto prazo",
+      "correlacao_mercado": 1.2,
+      "volatilidade_anual": 22.5
+    },
+    {
+      "id": "PROD009",
+      "nome": "ETF Dividendos",
+      "categoria": "Renda Variável",
+      "subcategoria": "ETF",
+      "descricao": "ETF que investe em ações que pagam altos dividendos",
+      "rentabilidade_esperada": "Dividendos + Valorização",
+      "rentabilidade_historica_12m": 10.5,
+      "rentabilidade_historica_24m": 9.2,
+      "risco": "alto",
+      "risco_score": 70,
+      "liquidez": "muito_alta",
+      "liquidez_dias": 1,
+      "aplicacao_minima": 100,
+      "taxa_administracao": 0.25,
+      "taxa_performance": 0,
+      "imposto_renda": "ordinario",
+      "prazo_minimo": "nenhum",
+      "prazo_recomendado_anos": 10,
+      "publico_alvo": [
+        "moderado",
+        "agressivo"
+      ],
+      "vantagens": [
+        "Renda passiva via dividendos",
+        "Baixa taxa de administração",
+        "Diversificação em ações",
+        "Liquidez muito alta",
+        "Potencial de retorno"
+      ],
+      "desvantagens": [
+        "Volatilidade alta",
+        "Risco de mercado",
+        "Dividendos não garantidos",
+        "Imposto ordinário"
+      ],
+      "quando_recomendar": "Cliente buscando renda passiva com exposição a ações",
+      "quando_evitar": "Cliente conservador",
+      "correlacao_mercado": 0.85,
+      "volatilidade_anual": 14.5
+    },
+    {
+      "id": "PROD010",
+      "nome": "Fundo Imobiliário",
+      "categoria": "Alternativas",
+      "subcategoria": "Imobiliário",
+      "descricao": "Fundo que investe em imóveis e recebe aluguel",
+      "rentabilidade_esperada": "Aluguel + Valorização",
+      "rentabilidade_historica_12m": 8.2,
+      "rentabilidade_historica_24m": 7.5,
+      "risco": "medio",
+      "risco_score": 55,
+      "liquidez": "media",
+      "liquidez_dias": 5,
+      "aplicacao_minima": 100,
+      "taxa_administracao": 0.5,
+      "taxa_performance": 0,
+      "imposto_renda": "ordinario",
+      "prazo_minimo": "nenhum",
+      "prazo_recomendado_anos": 7,
+      "publico_alvo": [
+        "moderado",
+        "agressivo"
+      ],
+      "vantagens": [
+        "Renda passiva via aluguel",
+        "Diversificação em imóveis",
+        "Exposição ao setor imobiliário",
+        "Potencial de valorização"
+      ],
+      "desvantagens": [
+        "Volatilidade moderada",
+        "Liquidez limitada",
+        "Risco de mercado imobiliário",
+        "Imposto ordinário"
+      ],
+      "quando_recomendar": "Cliente buscando diversificação com renda passiva",
+      "quando_evitar": "Cliente muito conservador",
+      "correlacao_mercado": 0.5,
+      "volatilidade_anual": 8.5
+    }
+  ]
+}
+
+📄 src/app.py
+
+"""
+Assessor IA - Aplicação Principal (Streamlit)
+Agente de consultoria de investimentos baseado em IA
+"""
+
+import streamlit as st
+import json
+import pandas as pd
+from datetime import datetime
+from agente import AgenteFincanceiro
+from base_conhecimento import BaseConhecimento
+from utils import formatar_moeda, formatar_percentual
+
+# Configuração da página
+st.set_page_config(
+    page_title="Assessor IA - Consultoria de Investimentos",
+    page_icon="💰",
+    layout="wide",
+    initial_sidebar_state="expanded"
+)
+
+# CSS customizado
+st.markdown("""
+    <style>
+    .main {
+        padding: 2rem;
+    }
+    .stMetric {
+        background-color: #f0f2f6;
+        padding: 1rem;
+        border-radius: 0.5rem;
+    }
+    .recommendation-box {
+        background-color: #e8f4f8;
+        padding: 1.5rem;
+        border-left: 4px solid #0066cc;
+        border-radius: 0.5rem;
+        margin: 1rem 0;
+    }
+    .warning-box {
+        background-color: #fff3cd;
+        padding: 1rem;
+        border-left: 4px solid #ffc107;
+        border-radius: 0.5rem;
+        margin: 1rem 0;
+    }
+    </style>
+""", unsafe_allow_html=True)
+
+# Inicializar sessão
+if 'agente' not in st.session_state:
+    st.session_state.agente = AgenteFincanceiro()
+    st.session_state.base_conhecimento = BaseConhecimento()
+    st.session_state.historico_chat = []
+    st.session_state.cliente_id = None
+
+# Header
+st.title("💰 Assessor IA - Consultoria de Investimentos")
+st.markdown("*Seu assessor de investimentos disponível 24/7*")
+
+# Sidebar
+with st.sidebar:
+    st.header("⚙️ Configurações")
+
+    # Seleção de cliente
+    st.subheader("Cliente")
+    clientes = st.session_state.base_conhecimento.listar_clientes()
+
+    if clientes:
+        cliente_selecionado = st.selectbox(
+            "Selecione um cliente:",
+            clientes,
+            key="cliente_select"
+        )
+        st.session_state.cliente_id = cliente_selecionado
+    else:
+        st.warning("Nenhum cliente cadastrado")
+
+    # Botão para novo cliente
+    if st.button("➕ Novo Cliente", key="novo_cliente"):
+        st.session_state.novo_cliente = True
+
+    st.divider()
+
+    # Informações do cliente
+    if st.session_state.cliente_id:
+        st.subheader("Perfil do Cliente")
+        perfil = st.session_state.base_conhecimento.obter_perfil(
+            st.session_state.cliente_id
+        )
+
+        if perfil:
+            col1, col2 = st.columns(2)
+            with col1:
+                st.metric(
+                    "Idade",
+                    perfil.get('dados_pessoais', {}).get('idade', 'N/A')
+                )
+                st.metric(
+                    "Profissão",
+                    perfil.get('dados_pessoais', {}).get('profissao', 'N/A')
+                )
+            with col2:
+                st.metric(
+                    "Perfil de Risco",
+                    perfil.get('perfil_risco', {}).get('classificacao', 'N/A').upper()
+                )
+                st.metric(
+                    "Patrimônio",
+                    formatar_moeda(
+                        perfil.get('situacao_financeira', {}).get('patrimonio_total', 0)
+                    )
+                )
+
+            # Alocação atual
+            st.subheader("Alocação Atual")
+            alocacao = perfil.get('alocacao_atual', {})
+
+            fig_alocacao = {
+                'Renda Fixa': alocacao.get('renda_fixa', 0),
+                'Renda Variável': alocacao.get('renda_variavel', 0),
+                'Alternativas': alocacao.get('alternativas', 0)
+            }
+
+            st.bar_chart(fig_alocacao)
+
+    st.divider()
+
+    # Informações do sistema
+    st.subheader("ℹ️ Informações")
+    st.info(
+        "Este é um agente de IA especializado em consultoria de investimentos. "
+        "Todas as recomendações são baseadas em dados reais e perfil do cliente."
+    )
+
+    # Disclaimer
+    st.warning(
+        "⚠️ **Disclaimer**: Esta é uma recomendação educacional, não uma orientação "
+        "de investimento. Consulte um consultor profissional para decisões complexas."
+    )
+
+# Main content
+if 'novo_cliente' in st.session_state and st.session_state.novo_cliente:
+    st.subheader("Cadastro de Novo Cliente")
+
+    with st.form("form_novo_cliente"):
+        col1, col2 = st.columns(2)
+
+        with col1:
+            nome = st.text_input("Nome completo")
+            idade = st.number_input("Idade", min_value=18, max_value=100)
+            profissao = st.text_input("Profissão")
+
+        with col2:
+            email = st.text_input("Email")
+            renda_mensal = st.number_input("Renda mensal (R$)", min_value=0)
+            patrimonio = st.number_input("Patrimônio total (R$)", min_value=0)
+
+        st.divider()
+        st.subheader("Objetivos de Investimento")
+
+        objetivo_principal = st.selectbox(
+            "Objetivo principal",
+            ["Aposentadoria", "Educação dos filhos", "Viagem", "Comprar imóvel", "Outro"]
+        )
+
+        prazo_anos = st.slider("Prazo (anos)", 1, 50, 10)
+        valor_alvo = st.number_input("Valor alvo (R$)", min_value=0)
+
+        st.divider()
+        st.subheader("Perfil de Risco")
+
+        tolerancia = st.radio(
+            "Como você se sentiria com uma queda de 15% no seu investimento?",
+            [
+                "Muito preocupado - prefiro segurança (Conservador)",
+                "Um pouco preocupado - mas entendo que é normal (Moderado)",
+                "Tranquilo - sei que é volatilidade normal (Agressivo)"
+            ]
+        )
+
+        experiencia = st.selectbox(
+            "Experiência com investimentos",
+            ["Nenhuma", "Pouca", "Intermediária", "Muita"]
+        )
+
+        if st.form_submit_button("✅ Cadastrar Cliente"):
+            # Mapear tolerância
+            perfil_risco_map = {
+                "Muito preocupado - prefiro segurança (Conservador)": "conservador",
+                "Um pouco preocupado - mas entendo que é normal (Moderado)": "moderado",
+                "Tranquilo - sei que é volatilidade normal (Agressivo)": "agressivo"
+            }
+
+            novo_cliente = {
+                "nome": nome,
+                "email": email,
+                "dados_pessoais": {
+                    "idade": idade,
+                    "profissao": profissao
+                },
+                "situacao_financeira": {
+                    "renda_mensal": renda_mensal,
+                    "patrimonio_total": patrimonio
+                },
+                "objetivos_investimento": [
+                    {
+                        "objetivo": objetivo_principal,
+                        "prazo_anos": prazo_anos,
+                        "valor_alvo": valor_alvo
+                    }
+                ],
+                "perfil_risco": {
+                    "classificacao": perfil_risco_map[tolerancia],
+                    "experiencia_investimento": experiencia.lower()
+                }
+            }
+
+            # Salvar cliente
+            st.session_state.base_conhecimento.salvar_cliente(novo_cliente)
+            st.success("✅ Cliente cadastrado com sucesso!")
+            st.session_state.novo_cliente = False
+            st.rerun()
+
+else:
+    # Chat interface
+    if st.session_state.cliente_id:
+        st.subheader(f"💬 Chat com Assessor IA")
+
+        # Exibir histórico
+        if st.session_state.historico_chat:
+            for mensagem in st.session_state.historico_chat:
+                if mensagem['tipo'] == 'usuario':
+                    with st.chat_message("user"):
+                        st.write(mensagem['conteudo'])
+                else:
+                    with st.chat_message("assistant"):
+                        st.write(mensagem['conteudo'])
+
+        # Input do usuário
+        usuario_input = st.chat_input(
+            "Faça uma pergunta sobre investimentos...",
+            key="chat_input"
+        )
+
+        if usuario_input:
+            # Adicionar mensagem do usuário ao histórico
+            st.session_state.historico_chat.append({
+                'tipo': 'usuario',
+                'conteudo': usuario_input,
+                'timestamp': datetime.now()
+            })
+
+            # Gerar resposta do agente
+            with st.spinner("🤔 Analisando sua pergunta..."):
+                resposta = st.session_state.agente.processar_pergunta(
+                    pergunta=usuario_input,
+                    cliente_id=st.session_state.cliente_id,
+                    base_conhecimento=st.session_state.base_conhecimento
+                )
+
+            # Adicionar resposta ao histórico
+            st.session_state.historico_chat.append({
+                'tipo': 'assistente',
+                'conteudo': resposta,
+                'timestamp': datetime.now()
+            })
+
+            # Exibir resposta
+            with st.chat_message("assistant"):
+                st.write(resposta)
+
+            st.rerun()
+
+        # Botões de ação rápida
+        st.divider()
+        st.subheader("⚡ Ações Rápidas")
+
+        col1, col2, col3 = st.columns(3)
+
+        with col1:
+            if st.button("📊 Análise de Carteira"):
+                st.session_state.historico_chat.append({
+                    'tipo': 'usuario',
+                    'conteudo': "Faça uma análise completa da minha carteira atual",
+                    'timestamp': datetime.now()
+                })
+
+        with col2:
+            if st.button("💡 Recomendação Personalizada"):
+                st.session_state.historico_chat.append({
+                    'tipo': 'usuario',
+                    'conteudo': "Qual é a melhor alocação para meu perfil?",
+                    'timestamp': datetime.now()
+                })
+
+        with col3:
+            if st.button("❓ Dúvidas Frequentes"):
+                st.session_state.historico_chat.append({
+                    'tipo': 'usuario',
+                    'conteudo': "Quais são as dúvidas mais comuns sobre investimentos?",
+                    'timestamp': datetime.now()
+                })
+
+        # Limpar histórico
+        if st.button("🗑️ Limpar Histórico"):
+            st.session_state.historico_chat = []
+            st.rerun()
+
+    else:
+        st.info("👈 Selecione um cliente na barra lateral para começar")
+
+# Footer
+st.divider()
+st.markdown("""
+    <div style='text-align: center; color: #666; font-size: 0.9rem;'>
+        <p>Assessor IA © 2026 | Consultoria de Investimentos Inteligente</p>
+        <p>Desenvolvido com ❤️ usando Streamlit e OpenAI</p>
+    </div>
+""", unsafe_allow_html=True)
+
+📄 src/agente.py
+
+"""
+Módulo do Agente Financeiro
+Lógica principal de processamento de perguntas e geração de recomendações
+"""
+
+import openai
+import json
+from typing import Dict, List, Optional
+from datetime import datetime
+
+class AgenteFincanceiro:
+    """Agente de IA para consultoria de investimentos"""
+
+    def __init__(self, api_key: Optional[str] = None):
+        """
+        Inicializar agente
+
+        Args:
+            api_key: Chave da API OpenAI (opcional, usa variável de ambiente)
+        """
+        if api_key:
+            openai.api_key = api_key
+
+        self.modelo = "gpt-4"
+        self.temperatura = 0.7
+        self.max_tokens = 1000
+
+    def processar_pergunta(
+        self,
+        pergunta: str,
+        cliente_id: str,
+        base_conhecimento
+    ) -> str:
+        """
+        Processar pergunta do cliente e gerar resposta
+
+        Args:
+            pergunta: Pergunta do cliente
+            cliente_id: ID do cliente
+            base_conhecimento: Instância da base de conhecimento
+
+        Returns:
+            Resposta do agente
+        """
+
+        # 1. Recuperar contexto do cliente
+        perfil = base_conhecimento.obter_perfil(cliente_id)
+        transacoes = base_conhecimento.obter_transacoes(cliente_id)
+        historico = base_conhecimento.obter_historico_atendimento(cliente_id)
+        produtos = base_conhecimento.obter_produtos()
+
+        # 2. Construir contexto para o LLM
+        contexto = self._construir_contexto(
+            perfil=perfil,
+            transacoes=transacoes,
+            historico=historico,
+            produtos=produtos
+        )
+
+        # 3. Classificar intent da pergunta
+        intent = self._classificar_intent(pergunta)
+
+        # 4. Gerar prompt customizado
+        prompt = self._gerar_prompt(
+            pergunta=pergunta,
+            contexto=contexto,
+            intent=intent,
+            perfil=perfil
+        )
+
+        # 5. Chamar LLM
+        resposta = self._chamar_llm(prompt)
+
+        # 6. Validar resposta
+        resposta_validada = self._validar_resposta(
+            resposta=resposta,
+            contexto=contexto,
+            perfil=perfil
+        )
+
+        return resposta_validada
+
+    def _construir_contexto(
+        self,
+        perfil: Dict,
+        transacoes: List[Dict],
+        historico: List[Dict],
+        produtos: List[Dict]
+    ) -> str:
+        """Construir contexto para o LLM"""
+
+        contexto = f"""
+CONTEXTO DO CLIENTE:
+
+PERFIL:
+- Nome: {perfil.get('nome', 'N/A')}
+- Idade: {perfil.get('dados_pessoais', {}).get('idade', 'N/A')} anos
+- Profissão: {perfil.get('dados_pessoais', {}).get('profissao', 'N/A')}
+- Renda Mensal: R$ {perfil.get('situacao_financeira', {}).get('renda_mensal', 0):,.2f}
+- Patrimônio Total: R$ {perfil.get('situacao_financeira', {}).get('patrimonio_total', 0):,.2f}
+- Perfil de Risco: {perfil.get('perfil_risco', {}).get('classificacao', 'N/A').upper()}
+- Tolerância a Queda: {perfil.get('perfil_risco', {}).get('tolerancia_queda_percentual', 'N/A')}%
+
+OBJETIVOS:
+"""
+
+        for obj in perfil.get('objetivos_investimento', []):
+            contexto += f"""
+- {obj.get('objetivo', 'N/A')} ({obj.get('prazo_anos', 'N/A')} anos)
+  Valor Alvo: R$ {obj.get('valor_alvo', 0):,.2f}
+  Prioridade: {obj.get('prioridade', 'N/A')}
+"""
+
+        contexto += f"""
+ALOCAÇÃO ATUAL:
+- Renda Fixa: {perfil.get('alocacao_atual', {}).get('renda_fixa', 0)}%
+- Renda Variável: {perfil.get('alocacao_atual', {}).get('renda_variavel', 0)}%
+- Alternativas: {perfil.get('alocacao_atual', {}).get('alternativas', 0)}%
+- Valor Total Investido: R$ {perfil.get('alocacao_atual', {}).get('valor_total_investido', 0):,.2f}
+
+PERFORMANCE:
+- Rentabilidade Acumulada: {perfil.get('historico_performance', {}).get('rentabilidade_acumulada', 0)}%
+- Rentabilidade Ano Anterior: {perfil.get('historico_performance', {}).get('rentabilidade_ano_anterior', 0)}%
+
+HISTÓRICO RECENTE:
+"""
+
+        for atendimento in historico[-5:]:  # Últimos 5 atendimentos
+            contexto += f"""
+- {atendimento.get('data', 'N/A')}: {atendimento.get('assunto', 'N/A')}
+  Resumo: {atendimento.get('resumo', 'N/A')}
+  Resultado: {atendimento.get('resultado', 'N/A')}
+"""
+
+        contexto += f"""
+TRANSAÇÕES RECENTES:
+"""
+
+        for transacao in transacoes[-5:]:  # Últimas 5 transações
+            contexto += f"""
+- {transacao.get('data', 'N/A')}: {transacao.get('tipo', 'N/A').upper()} {transacao.get('produto', 'N/A')}
+  Valor: R$ {transacao.get('valor', 0):,.2f}
+  Rentabilidade: {transacao.get('rentabilidade_percentual', 0)}%
+"""
+
+        return contexto
+
+    def _classificar_intent(self, pergunta: str) -> str:
+        """Classificar tipo de pergunta"""
+
+        pergunta_lower = pergunta.lower()
+
+        if any(word in pergunta_lower for word in ['recomend', 'devo investir', 'qual produto', 'melhor']):
+            return 'recomendacao'
+        elif any(word in pergunta_lower for word in ['como funciona', 'o que é', 'explique', 'diferença']):
+            return 'educacao'
+        elif any(word in pergunta_lower for word in ['carteira', 'performance', 'como está', 'análise']):
+            return 'analise'
+        elif any(word in pergunta_lower for word in ['risco', 'volatilidade', 'queda', 'preocupado']):
+            return 'risco'
+        else:
+            return 'geral'
+
+    def _gerar_prompt(
+        self,
+        pergunta: str,
+        contexto: str,
+        intent: str,
+        perfil: Dict
+    ) -> str:
+        """Gerar prompt customizado para o LLM"""
+
+        prompt_sistema = """Você é um Assessor de Investimentos IA especializado em consultoria financeira personalizada.
+
+PRINCÍPIOS:
+1. SEMPRE baseado em dados reais da base de conhecimento
+2. NUNCA invente dados ou rentabilidades
+3. SEMPRE considere o perfil de risco do cliente
+4. SEMPRE inclua disclaimers quando apropriado
+5. SEMPRE explique por que está recomendando algo
+
+ESTRUTURA DE RESPOSTA:
+1. Reconhecimento da pergunta
+2. Análise baseada em dados
+3. Recomendação ou resposta
+4. Explicação detalhada
+5. Próximos passos
+6. Abertura para mais perguntas
+
+LIMITAÇÕES:
+- Não prometa retornos garantidos
+- Não pressione para investir
+- Não invente informações
+- Sempre mencione que é recomendação educacional"""
+
+        prompt_usuario = f"""{contexto}
+
+PERGUNTA DO CLIENTE:
+{pergunta}
+
+TIPO DE PERGUNTA: {intent}
+
+INSTRUÇÕES ESPECÍFICAS:
+"""
+
+        if intent == 'recomendacao':
+            prompt_usuario += """
+- Analise o perfil de risco do cliente
+- Recomende 3-5 produtos alinhados
+- Justifique cada recomendação
+- Mostre alocação percentual
+- Explique benefícios e riscos
+"""
+        elif intent == 'educacao':
+            prompt_usuario += """
+- Explique de forma clara e acessível
+- Use exemplos práticos
+- Evite jargão desnecessário
+- Mostre comparações quando relevante
+"""
+        elif intent == 'analise':
+            prompt_usuario += """
+- Analise a carteira atual
+- Mostre performance
+- Identifique pontos fortes e fracos
+- Sugira ajustes se necessário
+"""
+        elif intent == 'risco':
+            prompt_usuario += """
+- Valide o sentimento do cliente
+- Explique volatilidade como normal
+- Mostre perspectiva histórica
+- Sugira ações se apropriado
+"""
+
+        return f"{prompt_sistema}\n\n{prompt_usuario}"
+
+    def _chamar_llm(self, prompt: str) -> str:
+        """Chamar LLM para gerar resposta"""
+
+        try:
+            response = openai.ChatCompletion.create(
+                model=self.modelo,
+                messages=[
+                    {"role": "system", "content": "Você é um assessor de investimentos profissional e confiável."},
+                    {"role": "user", "content": prompt}
+                ],
+                temperature=self.temperatura,
+                max_tokens=self.max_tokens
+            )
+
+            return response.choices[0].message.content
+
+        except Exception as e:
+            return f"Desculpe, ocorreu um erro ao processar sua pergunta: {str(e)}"
+
+    def _validar_resposta(
+        self,
+        resposta: str,
+        contexto: str,
+        perfil: Dict
+    ) -> str:
+        """Validar resposta contra base de conhecimento"""
+
+        # Verificar se há alucinações
+        if "não tenho informação" in resposta.lower() or "não sei" in resposta.lower():
+            # Resposta honesta sobre limitações
+            return resposta
+
+        # Adicionar disclaimer se recomendação
+        if any(word in resposta.lower() for word in ['recomendo', 'sugiro', 'recomendação']):
+            disclaimer = "\n\n⚠️ **Disclaimer**: Esta é uma recomendação educacional, não uma orientação de investimento. Consulte um consultor profissional para decisões complexas."
+            resposta += disclaimer
+
+        return resposta
+  
+  📄 src/base_conhecimento.py
+
+"""
+Módulo de Base de Conhecimento
+Carregamento e gerenciamento de dados do agente
+"""
+
+import json
+import pandas as pd
+from typing import Dict, List, Optional
+from pathlib import Path
+
+class BaseConhecimento:
+    """Gerenciador da base de conhecimento do agente"""
+
+    def __init__(self, data_dir: str = "data"):
+        """
+        Inicializar base de conhecimento
+
+        Args:
+            data_dir: Diretório dos arquivos de dados
+        """
+        self.data_dir = Path(data_dir)
+        self.clientes = {}
+        self.produtos = []
+        self.transacoes = {}
+        self.historico_atendimento = {}
+
+        # Carregar dados
+        self._carregar_dados()
+
+    def _carregar_dados(self):
+        """Carregar todos os dados da base"""
+
+        # Carregar perfil do cliente
+        perfil_path = self.data_dir / "perfil_investidor.json"
+        if perfil_path.exists():
+            with open(perfil_path, 'r', encoding='utf-8') as f:
+                perfil = json.load(f)
+                cliente_id = perfil.get('cliente_id', 'CLI001')
+                self.clientes[cliente_id] = perfil
+
+        # Carregar transações
+        transacoes_path = self.data_dir / "transacoes.csv"
+        if transacoes_path.exists():
+            df_transacoes = pd.read_csv(transacoes_path)
+            self.transacoes['CLI001'] = df_transacoes.to_dict('records')
+
+        # Carregar histórico de atendimento
+        historico_path = self.data_dir / "historico_atendimento.csv"
+        if historico_path.exists():
+            df_historico = pd.read_csv(historico_path)
+            self.historico_atendimento['CLI001'] = df_historico.to_dict('records')
+
+        # Carregar produtos
+        produtos_path = self.data_dir / "produtos_financeiros.json"
+        if produtos_path.exists():
+            with open(produtos_path, 'r', encoding='utf-8') as f:
+                dados_produtos = json.load(f)
+                self.produtos = dados_produtos.get('produtos', [])
+
+    def obter_perfil(self, cliente_id: str) -> Optional[Dict]:
+        """Obter perfil do cliente"""
+        return self.clientes.get(cliente_id)
+
+    def obter_transacoes(self, cliente_id: str) -> List[Dict]:
+        """Obter transações do cliente"""
+        return self.transacoes.get(cliente_id, [])
+
+    def obter_historico_atendimento(self, cliente_id: str) -> List[Dict]:
+        """Obter histórico de atendimento do cliente"""
+        return self.historico_atendimento.get(cliente_id, [])
+
+    def obter_produtos(self) -> List[Dict]:
+        """Obter catálogo de produtos"""
+        return self.produtos
+
+    def obter_produto(self, produto_id: str) -> Optional[Dict]:
+        """Obter produto específico"""
+        for produto in self.produtos:
+            if produto.get('id') == produto_id:
+                return produto
+        return None
+
+    def listar_clientes(self) -> List[str]:
+        """Listar IDs de clientes disponíveis"""
+        return list(self.clientes.keys())
+
+    def salvar_cliente(self, cliente_data: Dict) -> str:
+        """Salvar novo cliente"""
+
+        # Gerar ID
+        cliente_id = f"CLI{len(self.clientes) + 1:03d}"
+        cliente_data['cliente_id'] = cliente_id
+
+        # Salvar em memória
+        self.clientes[cliente_id] = cliente_data
+
+        # Inicializar listas vazias
+        self.transacoes[cliente_id] = []
+        self.historico_atendimento[cliente_id] = []
+
+        return cliente_id
+
+    def filtrar_produtos_por_perfil(
+        self,
+        cliente_id: str,
+        limite: int = 5
+    ) -> List[Dict]:
+        """Filtrar produtos adequados para o perfil do cliente"""
+
+        perfil = self.obter_perfil(cliente_id)
+        if not perfil:
+            return []
+
+        perfil_risco = perfil.get('perfil_risco', {}).get('classificacao', 'moderado')
+
+        # Filtrar produtos
+        produtos_filtrados = []
+        for produto in self.produtos:
+            publico_alvo = produto.get('publico_alvo', [])
+
+            # Verificar se produto é adequado para o perfil
+            if perfil_risco in publico_alvo or 'moderado' in publico_alvo:
+                produtos_filtrados.append(produto)
+
+        # Ordenar por relevância e retornar limite
+        return produtos_filtrados[:limite]
+
+    def calcular_alocacao_recomendada(self, cliente_id: str) -> Dict:
+        """Calcular alocação recomendada baseada no perfil"""
+
+        perfil = self.obter_perfil(cliente_id)
+        if not perfil:
+            return {}
+
+        perfil_risco = perfil.get('perfil_risco', {}).get('classificacao', 'moderado')
+
+        # Alocações padrão por perfil
+        alocacoes = {
+            'conservador': {
+                'renda_fixa': 80,
+                'renda_variavel': 15,
+                'alternativas': 5
+            },
+            'moderado': {
+                'renda_fixa': 60,
+                'renda_variavel': 30,
+                'alternativas': 10
+            },
+            'agressivo': {
+                'renda_fixa': 30,
+                'renda_variavel': 60,
+                'alternativas': 10
+            }
+        }
+
+        return alocacoes.get(perfil_risco, alocacoes['moderado'])
+
+    def obter_estatisticas_cliente(self, cliente_id: str) -> Dict:
+        """Obter estatísticas do cliente"""
+
+        transacoes = self.obter_transacoes(cliente_id)
+        perfil = self.obter_perfil(cliente_id)
+
+        if not transacoes:
+            return {}
+
+        df = pd.DataFrame(transacoes)
+
+        # Calcular estatísticas
+        total_investido = df[df['tipo'] == 'compra']['valor'].sum()
+        total_vendido = df[df['tipo'] == 'venda']['valor'].sum()
+        ganhos_realizados = df[df['tipo'] == 'venda']['rentabilidade_percentual'].
+
+  
