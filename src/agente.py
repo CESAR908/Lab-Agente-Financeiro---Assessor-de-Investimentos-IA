@@ -6,7 +6,7 @@ class AgenteFincanceiro:
 
     def __init__(self, ollama_url: str = "http://127.0.0.1:11434"):
         self.ollama_url = ollama_url
-        self.modelo = "mistral"
+        self.modelo = "phi"
 
     def processar_pergunta(
         self,
