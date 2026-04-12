@@ -1,0 +1,18 @@
+{
+  "produtos": [
+    {
+      "id": "PRD001",
+      "nome": "LCI",
+      "categoria": "Renda Fixa",
+      "rentabilidade_media": 9.5,
+      "risco": "Baixo"
+    },
+    {
+      "id": "PRD002",
+      "nome": "Fundo Multimercado",
+      "categoria": "Alternativas",
+      "rentabilidade_media": 12.0,
+      "risco": "Moderado"
+    }
+  ]
+}
