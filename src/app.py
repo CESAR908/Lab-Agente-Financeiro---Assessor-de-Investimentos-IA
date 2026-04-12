@@ -313,12 +313,16 @@ class BaseConhecimento:
         return cliente_id
 
 # src/app.py
+# src/app.py
 import streamlit as st
 from datetime import datetime
 
-from agente import AgenteFinanceiro   # <-- new correct import
-from base_conhecimento import BaseConhecimento
-from utils import formatar_moeda, formatar_percentual
+# imports corretos com o caminho do pacote
+from src.agente import AgenteFinanceiro
+from src.base_conhecimento import BaseConhecimento
+from src.utils import formatar_moeda, formatar_percentual
+
+# ... o resto do código permanece exatamente como enviado anteriormente ...
 
 # ----------------------------------------------------------------------
 # Page config + global CSS
