@@ -23,11 +23,15 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-if 'agente' not in st.session_state:
-    st.session_state.agente = AgenteFincanceiro()
-    st.session_state.base_conhecimento = BaseConhecimento()
-    st.session_state.historico_chat = []
-    st.session_state.cliente_id = "CLI001"
+try:
+    if 'agente' not in st.session_state:
+        st.session_state.agente = AgenteFincanceiro()
+        st.session_state.base_conhecimento = BaseConhecimento()
+        st.session_state.historico_chat = []
+        st.session_state.cliente_id = "CLI001"
+except Exception as e:
+    st.error(f"Erro ao inicializar: {str(e)}")
+    st.stop()
 
 st.title("💰 Assessor IA - Consultoria de Investimentos")
 st.markdown("*Seu assessor de investimentos disponível 24/7*")
@@ -35,33 +39,39 @@ st.markdown("*Seu assessor de investimentos disponível 24/7*")
 with st.sidebar:
     st.header("⚙️ Configurações")
 
-    clientes = st.session_state.base_conhecimento.listar_clientes()
+    try:
+        clientes = st.session_state.base_conhecimento.listar_clientes()
 
-    if clientes:
-        cliente_selecionado = st.selectbox(
-            "Selecione um cliente:",
-            clientes,
-            key="cliente_select"
-        )
-        st.session_state.cliente_id = cliente_selecionado
+        if clientes:
+            cliente_selecionado = st.selectbox(
+                "Selecione um cliente:",
+                clientes,
+                key="cliente_select"
+            )
+            st.session_state.cliente_id = cliente_selecionado
 
-        perfil = st.session_state.base_conhecimento.obter_perfil(
-            st.session_state.cliente_id
-        )
+            perfil = st.session_state.base_conhecimento.obter_perfil(
+                st.session_state.cliente_id
+            )
 
-        if perfil:
-            st.subheader("Perfil do Cliente")
-            col1, col2 = st.columns(2)
-            with col1:
-                st.metric(
-                    "Idade",
-                    perfil.get('dados_pessoais', {}).get('idade', 'N/A')
-                )
-            with col2:
-                st.metric(
-                    "Perfil de Risco",
-                    perfil.get('perfil_risco', {}).get('classificacao', 'N/A').upper()
-                )
+            if perfil:
+                st.subheader("Perfil do Cliente")
+                col1, col2 = st.columns(2)
+                with col1:
+                    st.metric(
+                        "Idade",
+                        perfil.get('dados_pessoais', {}).get('idade', 'N/A')
+                    )
+                with col2:
+                    st.metric(
+                        "Perfil de Risco",
+                        perfil.get('perfil_risco', {}).get('classificacao', 'N/A').upper()
+                    )
+        else:
+            st.warning("Nenhum cliente disponível")
+
+    except Exception as e:
+        st.error(f"Erro ao carregar clientes: {str(e)}")
 
     st.warning(
         "⚠️ Esta é uma recomendação educacional, não uma orientação de investimento."
@@ -92,11 +102,14 @@ if st.session_state.cliente_id:
         })
 
         with st.spinner("🤔 Analisando sua pergunta..."):
-            resposta = st.session_state.agente.processar_pergunta(
-                pergunta=usuario_input,
-                cliente_id=st.session_state.cliente_id,
-                base_conhecimento=st.session_state.base_conhecimento
-            )
+            try:
+                resposta = st.session_state.agente.processar_pergunta(
+                    pergunta=usuario_input,
+                    cliente_id=st.session_state.cliente_id,
+                    base_conhecimento=st.session_state.base_conhecimento
+                )
+            except Exception as e:
+                resposta = f"Erro ao processar: {str(e)}"
 
         st.session_state.historico_chat.append({
             'tipo': 'assistente',
@@ -158,5 +171,3 @@ if st.session_state.cliente_id:
         if st.button("🗑️ Limpar"):
             st.session_state.historico_chat = []
             st.rerun()
-
-
