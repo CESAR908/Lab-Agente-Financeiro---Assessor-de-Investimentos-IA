@@ -1,0 +1,31 @@
+{
+  "cliente_id": "CLI001",
+  "nome": "João Silva",
+  "dados_pessoais": {
+    "idade": 35,
+    "profissao": "Engenheiro"
+  },
+  "situacao_financeira": {
+    "renda_mensal": 8000.00,
+    "patrimonio_total": 150000.00
+  },
+  "perfil_risco": {
+    "classificacao": "moderado",
+    "tolerancia_queda_percentual": 15
+  },
+  "objetivos_investimento": [
+    {
+      "objetivo": "Aposentadoria",
+      "prazo_anos": 30,
+      "valor_alvo": 1000000.00
+    }
+  ],
+  "alocacao_atual": {
+    "renda_fixa": 60,
+    "renda_variavel": 30,
+    "alternativas": 10
+  },
+  "historico_performance": {
+    "rentabilidade_acumulada": 12.5
+  }
+}
