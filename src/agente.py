@@ -31,12 +31,9 @@ class AgenteFincanceiro:
                 produtos=produtos
             )
 
-            intent = self._classificar_intent(pergunta)
-
-            prompt = self._gerar_prompt(
+            prompt = self._construir_prompt(
                 pergunta=pergunta,
                 contexto=contexto,
-                intent=intent,
                 perfil=perfil
             )
 
@@ -50,182 +47,129 @@ class AgenteFincanceiro:
     def _construir_contexto(
         self,
         perfil: Dict,
-        transacoes: List[Dict],
-        historico: List[Dict],
-        produtos: List[Dict]
+        transacoes: List,
+        historico: List,
+        produtos: List
     ) -> str:
 
-        try:
-            contexto = f"""
+        contexto = f"""
 PERFIL DO CLIENTE:
 - Nome: {perfil.get('nome', 'N/A')}
-- Idade: {perfil.get('dados_pessoais', {}).get('idade', 'N/A')} anos
-- Profissão: {perfil.get('dados_pessoais', {}).get('profissao', 'N/A')}
-- Renda Mensal: R$ {perfil.get('situacao_financeira', {}).get('renda_mensal', 0):,.2f}
-- Patrimônio: R$ {perfil.get('situacao_financeira', {}).get('patrimonio_total', 0):,.2f}
-- Perfil de Risco: {perfil.get('perfil_risco', {}).get('classificacao', 'N/A').upper()}
-- Tolerância a Queda: {perfil.get('perfil_risco', {}).get('tolerancia_queda_percentual', 'N/A')}%
+- Idade: {perfil.get('idade', 'N/A')}
+- Renda Mensal: R$ {perfil.get('renda_mensal', 0):,.2f}
+- Patrimônio: R$ {perfil.get('patrimonio', 0):,.2f}
+- Perfil de Risco: {perfil.get('perfil_risco', 'N/A')}
+- Objetivo: {perfil.get('objetivo', 'N/A')}
 
-OBJETIVOS:
+TRANSAÇÕES RECENTES:
 """
+        for t in transacoes[-5:]:
+            contexto += f"- {t.get('data')}: {t.get('tipo')} - R$ {t.get('valor'):,.2f}\n"
 
-            for obj in perfil.get('objetivos_investimento', []):
-                contexto += f"- {obj.get('objetivo', 'N/A')} ({obj.get('prazo_anos', 'N/A')} anos): R$ {obj.get('valor_alvo', 0):,.2f}\n"
+        contexto += "\nPRODUTOS DISPONÍVEIS:\n"
+        for p in produtos[:5]:
+            contexto += f"- {p.get('nome')}: {p.get('descricao')}\n"
 
-            contexto += f"""
-ALOCAÇÃO ATUAL:
-- Renda Fixa: {perfil.get('alocacao_atual', {}).get('renda_fixa', 0)}%
-- Renda Variável: {perfil.get('alocacao_atual', {}).get('renda_variavel', 0)}%
-- Alternativas: {perfil.get('alocacao_atual', {}).get('alternativas', 0)}%
-- Valor Total: R$ {perfil.get('alocacao_atual', {}).get('valor_total_investido', 0):,.2f}
+        return contexto
 
-PERFORMANCE:
-- Rentabilidade Acumulada: {perfil.get('historico_performance', {}).get('rentabilidade_acumulada', 0)}%
-- Rentabilidade Ano Anterior: {perfil.get('historico_performance', {}).get('rentabilidade_ano_anterior', 0)}%
-
-ÚLTIMAS TRANSAÇÕES:
-"""
-
-            if transacoes:
-                for transacao in transacoes[-3:]:
-                    contexto += f"- {transacao.get('data')}: {transacao.get('tipo', 'N/A').upper()} {transacao.get('produto', 'N/A')} - R$ {transacao.get('valor', 0):,.2f}\n"
-            else:
-                contexto += "- Nenhuma transação registrada\n"
-
-            return contexto
-
-        except Exception as e:
-            return f"Erro ao construir contexto: {str(e)}"
-
-    def _classificar_intent(self, pergunta: str) -> str:
-
-        pergunta_lower = pergunta.lower()
-
-        if any(word in pergunta_lower for word in ['recomend', 'devo investir', 'qual produto', 'melhor', 'alocação']):
-            return 'recomendacao'
-        elif any(word in pergunta_lower for word in ['como funciona', 'o que é', 'explique', 'diferença']):
-            return 'educacao'
-        elif any(word in pergunta_lower for word in ['carteira', 'performance', 'como está', 'análise', 'desempenho']):
-            return 'analise'
-        elif any(word in pergunta_lower for word in ['risco', 'volatilidade', 'queda', 'preocupado', 'assustado']):
-            return 'risco'
-        else:
-            return 'geral'
-
-    def _gerar_prompt(
+    def _construir_prompt(
         self,
         pergunta: str,
         contexto: str,
-        intent: str,
         perfil: Dict
     ) -> str:
 
-        if intent == 'analise':
-            prompt = f"""{contexto}
+        prompt = f"""Você é um assessor financeiro profissional e experiente.
 
-PERGUNTA: {pergunta}
+{contexto}
 
-Você é um assessor de investimentos profissional. Faça uma análise COMPLETA e ESTRUTURADA da carteira.
+Cliente pergunta: {pergunta}
 
-RESPONDA EM JSON COM ESTA ESTRUTURA:
-{{
-  "analise_carteira": {{
-    "resumo_geral": "Análise breve da situação atual",
-    "pontos_fortes": ["ponto 1", "ponto 2", "ponto 3"],
-    "areas_melhoria": ["área 1", "área 2"],
-    "recomendacoes": [
-      {{
-        "acao": "descrição da ação",
-        "beneficio": "benefício esperado",
-        "prioridade": "alta/média/baixa"
-      }}
-    ],
-    "rentabilidade_esperada": "X% ao ano",
-    "proximos_passos": ["passo 1", "passo 2"]
-  }}
-}}
+Responda de forma:
+1. Clara e objetiva
+2. Baseada no perfil e histórico do cliente
+3. Com recomendações práticas
+4. Em português brasileiro
 
-Seja específico e baseie-se APENAS nos dados fornecidos."""
-
-        elif intent == 'recomendacao':
-            prompt = f"""{contexto}
-
-PERGUNTA: {pergunta}
-
-Você é um assessor de investimentos profissional. Recomende produtos ESPECÍFICOS baseado no perfil.
-
-RESPONDA EM JSON COM ESTA ESTRUTURA:
-{{
-  "recomendacoes": {{
-    "alocacao_sugerida": {{
-      "renda_fixa": "X%",
-      "renda_variavel": "X%",
-      "alternativas": "X%"
-    }},
-    "produtos": [
-      {{
-        "nome": "Nome do Produto",
-        "percentual": "X%",
-        "motivo": "Por que recomendo",
-        "risco": "baixo/médio/alto",
-        "rentabilidade_esperada": "X% ao ano"
-      }}
-    ],
-    "beneficios": ["benefício 1", "benefício 2"],
-    "riscos": ["risco 1", "risco 2"],
-    "disclaimer": "Esta é uma recomendação educacional"
-  }}
-}}
-
-Seja específico e baseie-se APENAS nos dados fornecidos."""
-
-        else:
-            prompt = f"""{contexto}
-
-PERGUNTA: {pergunta}
-
-Você é um assessor de investimentos profissional. Responda de forma clara, acessível e baseada nos dados fornecidos.
-
-INSTRUÇÕES:
-1. Sempre baseie sua resposta nos dados fornecidos
-2. Nunca invente informações ou rentabilidades
-3. Considere o perfil de risco do cliente
-4. Seja claro e acessível
-5. Inclua disclaimer se for recomendação
-
-Responda de forma concisa e profissional."""
+Resposta:"""
 
         return prompt
 
     def _chamar_ollama(self, prompt: str) -> str:
-
         try:
+            payload = {
+                "model": self.modelo,
+                "prompt": prompt,
+                "stream": False,
+                "temperature": 0.7,
+                "top_p": 0.9,
+                "top_k": 40
+            }
+
             response = requests.post(
-    ...,
-    timeout=120  # 2 minutos
-)
                 f"{self.ollama_url}/api/generate",
-                json={
-                    "model": self.modelo,
-                    "prompt": prompt,
-                    "stream": False,
-                    "temperature": 0.7
-                },
-                timeout=60
+                json=payload,
+                timeout=120
             )
 
             if response.status_code == 200:
-                try:
-                    resultado = response.json()
-                    return resultado.get('response', 'Desculpe, não consegui gerar uma resposta.')
-                except json.JSONDecodeError:
-                    return f"Erro ao decodificar resposta: {response.text[:200]}"
+                resultado = response.json()
+                return resultado.get("response", "Sem resposta do modelo")
             else:
-                return f"Erro ao conectar com Ollama: Status {response.status_code}"
+                return f"Erro na API: {response.status_code}"
 
-        except requests.exceptions.ConnectionError:
-            return "⚠️ Ollama não está rodando. Execute em outro terminal: ollama serve"
         except requests.exceptions.Timeout:
-            return "⚠️ Timeout ao conectar com Ollama. Verifique se está rodando."
+            return "Timeout: O modelo demorou muito para responder. Tente novamente."
+        except requests.exceptions.ConnectionError:
+            return "Erro de conexão com Ollama. Verifique se está rodando em http://127.0.0.1:11434"
         except Exception as e:
-            return f"Erro: {str(e)}"
+            return f"Erro ao chamar Ollama: {str(e)}"
+
+    def analisar_carteira(
+        self,
+        cliente_id: str,
+        valor_investimento: float,
+        base_conhecimento
+    ) -> Dict:
+
+        try:
+            perfil = base_conhecimento.obter_perfil(cliente_id)
+            produtos = base_conhecimento.obter_produtos()
+
+            contexto = f"""
+ANÁLISE DE CARTEIRA:
+- Cliente: {perfil.get('nome')}
+- Valor a Investir: R$ {valor_investimento:,.2f}
+- Perfil de Risco: {perfil.get('perfil_risco')}
+- Patrimônio Atual: R$ {perfil.get('patrimonio', 0):,.2f}
+- Objetivo: {perfil.get('objetivo')}
+
+PRODUTOS DISPONÍVEIS:
+"""
+            for p in produtos:
+                contexto += f"- {p.get('nome')}: Rentabilidade {p.get('rentabilidade')}% ao ano\n"
+
+            prompt = f"""{contexto}
+
+Baseado neste perfil e valor de investimento, recomende uma alocação de carteira.
+Forneça em formato JSON com as recomendações."""
+
+            resposta = self._chamar_ollama(prompt)
+
+            try:
+                recomendacoes = json.loads(resposta)
+            except:
+                recomendacoes = {"recomendacao": resposta}
+
+            return {
+                "status": "sucesso",
+                "valor_investimento": valor_investimento,
+                "recomendacoes": recomendacoes,
+                "perfil": perfil.get('perfil_risco')
+            }
+
+        except Exception as e:
+            return {
+                "status": "erro",
+                "mensagem": str(e)
+            }
