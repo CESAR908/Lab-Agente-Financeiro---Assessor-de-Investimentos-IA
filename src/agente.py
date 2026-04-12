@@ -201,6 +201,9 @@ Responda de forma concisa e profissional."""
 
         try:
             response = requests.post(
+    ...,
+    timeout=120  # 2 minutos
+)
                 f"{self.ollama_url}/api/generate",
                 json={
                     "model": self.modelo,
