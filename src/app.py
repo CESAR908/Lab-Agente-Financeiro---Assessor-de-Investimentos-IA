@@ -159,7 +159,6 @@ if st.session_state.cliente_id:
             st.session_state.historico_chat = []
             st.rerun()
 
-
 import requests
 import json
 from typing import Dict, List, Optional
@@ -307,7 +306,7 @@ Responda de forma concisa e profissional."""
             return "Erro: Não consegui conectar com Ollama. Verifique se está rodando em http://localhost:11434"
         except Exception as e:
             return f"Erro: {str(e)}"
-        
+
 import json
 import pandas as pd
 from typing import Dict, List, Optional
