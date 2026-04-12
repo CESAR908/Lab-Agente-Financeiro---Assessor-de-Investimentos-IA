@@ -15,36 +15,37 @@ class AgenteFincanceiro:
         base_conhecimento
     ) -> str:
 
-        perfil = base_conhecimento.obter_perfil(cliente_id)
-        
-        # ✅ VERIFICAÇÃO CRÍTICA
-        if perfil is None:
-            clientes = base_conhecimento.listar_clientes()
-            return f"❌ **ERRO**: Perfil do cliente '{cliente_id}' não encontrado!\n\n**Clientes disponíveis**: {clientes if clientes else 'Nenhum'}\n\n**Solução**: Verifique se `data/perfil_investidor.json` existe."
-        
-        transacoes = base_conhecimento.obter_transacoes(cliente_id)
-        historico = base_conhecimento.obter_historico_atendimento(cliente_id)
-        produtos = base_conhecimento.obter_produtos()
+        try:
+            perfil = base_conhecimento.obter_perfil(cliente_id)
+            if not perfil:
+                return "Erro: Perfil do cliente não encontrado."
 
-        contexto = self._construir_contexto(
-            perfil=perfil,
-            transacoes=transacoes,
-            historico=historico,
-            produtos=produtos
-        )
+            transacoes = base_conhecimento.obter_transacoes(cliente_id)
+            historico = base_conhecimento.obter_historico_atendimento(cliente_id)
+            produtos = base_conhecimento.obter_produtos()
 
-        intent = self._classificar_intent(pergunta)
+            contexto = self._construir_contexto(
+                perfil=perfil,
+                transacoes=transacoes,
+                historico=historico,
+                produtos=produtos
+            )
 
-        prompt = self._gerar_prompt(
-            pergunta=pergunta,
-            contexto=contexto,
-            intent=intent,
-            perfil=perfil
-        )
+            intent = self._classificar_intent(pergunta)
 
-        resposta = self._chamar_ollama(prompt)
+            prompt = self._gerar_prompt(
+                pergunta=pergunta,
+                contexto=contexto,
+                intent=intent,
+                perfil=perfil
+            )
 
-        return resposta
+            resposta = self._chamar_ollama(prompt)
+
+            return resposta
+
+        except Exception as e:
+            return f"Erro ao processar pergunta: {str(e)}"
 
     def _construir_contexto(
         self,
@@ -54,7 +55,8 @@ class AgenteFincanceiro:
         produtos: List[Dict]
     ) -> str:
 
-        contexto = f"""
+        try:
+            contexto = f"""
 PERFIL DO CLIENTE:
 - Nome: {perfil.get('nome', 'N/A')}
 - Idade: {perfil.get('dados_pessoais', {}).get('idade', 'N/A')} anos
@@ -67,10 +69,10 @@ PERFIL DO CLIENTE:
 OBJETIVOS:
 """
 
-        for obj in perfil.get('objetivos_investimento', []):
-            contexto += f"- {obj.get('objetivo', 'N/A')} ({obj.get('prazo_anos', 'N/A')} anos): R$ {obj.get('valor_alvo', 0):,.2f}\n"
+            for obj in perfil.get('objetivos_investimento', []):
+                contexto += f"- {obj.get('objetivo', 'N/A')} ({obj.get('prazo_anos', 'N/A')} anos): R$ {obj.get('valor_alvo', 0):,.2f}\n"
 
-        contexto += f"""
+            contexto += f"""
 ALOCAÇÃO ATUAL:
 - Renda Fixa: {perfil.get('alocacao_atual', {}).get('renda_fixa', 0)}%
 - Renda Variável: {perfil.get('alocacao_atual', {}).get('renda_variavel', 0)}%
@@ -82,13 +84,16 @@ PERFORMANCE:
 ÚLTIMAS TRANSAÇÕES:
 """
 
-        if transacoes:
-            for transacao in transacoes[-3:]:
-                contexto += f"- {transacao.get('data')}: {transacao.get('tipo').upper()} {transacao.get('produto')} - R$ {transacao.get('valor'):,.2f}\n"
-        else:
-            contexto += "- Nenhuma transação registrada\n"
+            if transacoes:
+                for transacao in transacoes[-3:]:
+                    contexto += f"- {transacao.get('data')}: {transacao.get('tipo', 'N/A').upper()} {transacao.get('produto', 'N/A')} - R$ {transacao.get('valor', 0):,.2f}\n"
+            else:
+                contexto += "- Nenhuma transação registrada\n"
 
-        return contexto
+            return contexto
+
+        except Exception as e:
+            return f"Erro ao construir contexto: {str(e)}"
 
     def _classificar_intent(self, pergunta: str) -> str:
 
@@ -145,13 +150,17 @@ Responda de forma concisa e profissional."""
             )
 
             if response.status_code == 200:
-                resultado = response.json()
-                return resultado.get('response', 'Desculpe, não consegui gerar uma resposta.')
+                try:
+                    resultado = response.json()
+                    return resultado.get('response', 'Desculpe, não consegui gerar uma resposta.')
+                except json.JSONDecodeError:
+                    return f"Erro ao decodificar resposta do Ollama: {response.text[:100]}"
             else:
-                return f"Erro ao conectar com Ollama: {response.status_code}"
+                return f"Erro ao conectar com Ollama: Status {response.status_code}"
 
         except requests.exceptions.ConnectionError:
-            return "⚠️ Ollama não está rodando em http://localhost:11434"
+            return "⚠️ Ollama não está rodando. Execute: ollama serve"
+        except requests.exceptions.Timeout:
+            return "⚠️ Timeout ao conectar com Ollama. Verifique se está rodando."
         except Exception as e:
             return f"Erro: {str(e)}"
-
