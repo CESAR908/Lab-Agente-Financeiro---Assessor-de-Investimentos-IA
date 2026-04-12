@@ -16,6 +16,12 @@ class AgenteFincanceiro:
     ) -> str:
 
         perfil = base_conhecimento.obter_perfil(cliente_id)
+        
+        # ✅ VERIFICAÇÃO CRÍTICA
+        if perfil is None:
+            clientes = base_conhecimento.listar_clientes()
+            return f"❌ **ERRO**: Perfil do cliente '{cliente_id}' não encontrado!\n\n**Clientes disponíveis**: {clientes if clientes else 'Nenhum'}\n\n**Solução**: Verifique se `data/perfil_investidor.json` existe."
+        
         transacoes = base_conhecimento.obter_transacoes(cliente_id)
         historico = base_conhecimento.obter_historico_atendimento(cliente_id)
         produtos = base_conhecimento.obter_produtos()
@@ -76,8 +82,11 @@ PERFORMANCE:
 ÚLTIMAS TRANSAÇÕES:
 """
 
-        for transacao in transacoes[-3:]:
-            contexto += f"- {transacao.get('data')}: {transacao.get('tipo').upper()} {transacao.get('produto')} - R$ {transacao.get('valor'):,.2f}\n"
+        if transacoes:
+            for transacao in transacoes[-3:]:
+                contexto += f"- {transacao.get('data')}: {transacao.get('tipo').upper()} {transacao.get('produto')} - R$ {transacao.get('valor'):,.2f}\n"
+        else:
+            contexto += "- Nenhuma transação registrada\n"
 
         return contexto
 
@@ -142,8 +151,7 @@ Responda de forma concisa e profissional."""
                 return f"Erro ao conectar com Ollama: {response.status_code}"
 
         except requests.exceptions.ConnectionError:
-            return "Erro: Não consegui conectar com Ollama. Verifique se está rodando em http://localhost:11434"
+            return "⚠️ Ollama não está rodando em http://localhost:11434"
         except Exception as e:
             return f"Erro: {str(e)}"
-
 
