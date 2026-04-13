@@ -6,7 +6,6 @@ import plotly.graph_objects as go
 import plotly.express as px
 from io import BytesIO
 
-# ⚠️ IMPORTANTE: set_page_config DEVE ser a PRIMEIRA chamada do Streamlit
 st.set_page_config(
     page_title="Assessor IA",
     page_icon="💰",
@@ -14,7 +13,6 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# Agora importar os outros módulos
 from agente_otimizado import AgenteOtimizado
 from agente import AgenteFincanceiro
 from base_conhecimento import BaseConhecimento
@@ -22,7 +20,6 @@ from utils import formatar_moeda
 from login import show_login, check_login
 from analise_visual import gerar_analise_visual
 
-# CSS customizado
 st.markdown("""
     <style>
     .metric-box {
@@ -33,31 +30,13 @@ st.markdown("""
         text-align: center;
         margin: 0.5rem 0;
     }
-    .success-box {
-        background-color: #d4edda;
-        border: 1px solid #c3e6cb;
-        color: #155724;
-        padding: 1rem;
-        border-radius: 0.5rem;
-        margin: 1rem 0;
-    }
-    .warning-box {
-        background-color: #fff3cd;
-        border: 1px solid #ffeeba;
-        color: #856404;
-        padding: 1rem;
-        border-radius: 0.5rem;
-        margin: 1rem 0;
-    }
     </style>
 """, unsafe_allow_html=True)
 
-# Verificar login
 if not check_login():
     show_login()
     st.stop()
 
-# Se chegou aqui, usuário está logado
 try:
     if 'agente' not in st.session_state:
         st.session_state.agente = AgenteFincanceiro()
@@ -70,24 +49,18 @@ except Exception as e:
     st.error(f"Erro ao inicializar: {str(e)}")
     st.stop()
 
-# Título e descrição
 st.title("💰 Assessor IA - Consultoria de Investimentos")
 st.markdown("*Seu assessor de investimentos disponível 24/7 | Powered by Phi AI*")
 
-# ============================================================================
-# SIDEBAR - CONFIGURAÇÕES E CLIENTE
-# ============================================================================
 with st.sidebar:
     st.header("⚙️ Configurações")
 
-    # Logout
     if st.button("🚪 Logout", use_container_width=True):
         st.session_state.logged_in = False
         st.rerun()
 
     st.divider()
 
-    # Seleção de cliente
     try:
         clientes = st.session_state.base_conhecimento.listar_clientes()
         if clientes and isinstance(clientes, list) and len(clientes) > 0:
@@ -102,7 +75,6 @@ with st.sidebar:
                 )
                 st.session_state.cliente_id = cliente_selecionado
 
-                # Mostrar info do cliente
                 cliente_info = next((c for c in clientes if c['id'] == cliente_selecionado), None)
                 if cliente_info:
                     st.markdown(f"""
@@ -113,16 +85,11 @@ with st.sidebar:
                     - 💼 Patrimônio: R$ {cliente_info.get('patrimonio', 0):,.2f}
                     - 🎯 Perfil: {cliente_info.get('perfil_risco', 'N/A').capitalize()}
                     """)
-            else:
-                st.warning("⚠️ Formato de clientes inválido")
-        else:
-            st.info("ℹ️ Nenhum cliente disponível")
     except Exception as e:
         st.error(f"❌ Erro ao carregar clientes: {str(e)}")
 
     st.divider()
 
-    # Estatísticas
     st.markdown("### 📊 Estatísticas")
     stats = st.session_state.base_conhecimento.obter_estatisticas()
 
@@ -137,9 +104,6 @@ with st.sidebar:
         f"R$ {stats.get('total_patrimonio', 0):,.2f}"
     )
 
-# ============================================================================
-# ABAS PRINCIPAIS
-# ============================================================================
 tab1, tab2, tab3, tab4, tab5, tab6 = st.tabs([
     "📊 Dashboard",
     "📈 Análise de Carteira",
@@ -149,13 +113,9 @@ tab1, tab2, tab3, tab4, tab5, tab6 = st.tabs([
     "ℹ️ Sobre"
 ])
 
-# ============================================================================
-# TAB 1: DASHBOARD
-# ============================================================================
 with tab1:
     st.subheader("📊 Dashboard Executivo")
 
-    # Métricas principais
     col1, col2, col3, col4 = st.columns(4)
 
     with col1:
@@ -174,7 +134,6 @@ with tab1:
 
     st.divider()
 
-    # Gráfico de atividades
     if st.session_state.historico_chat:
         st.markdown("### 📈 Atividades Recentes")
 
@@ -190,7 +149,6 @@ with tab1:
 
         st.dataframe(df_atividades, use_container_width=True, hide_index=True)
 
-        # Gráfico de tipos de operação
         col1, col2 = st.columns([2, 1])
 
         with col1:
@@ -214,15 +172,10 @@ with tab1:
             **Análises Realizadas:** {analises}
 
             **Perguntas Respondidas:** {chats}
-
-            **Taxa de Utilização:** {(len(st.session_state.historico_chat) / 100 * 100):.1f}%
             """)
     else:
-        st.info("📭 Nenhuma operação registrada ainda. Comece analisando uma carteira!")
+        st.info("📭 Nenhuma operação registrada ainda.")
 
-# ============================================================================
-# TAB 2: ANÁLISE DE CARTEIRA
-# ============================================================================
 with tab2:
     st.subheader("📈 Análise de Carteira de Investimentos")
 
@@ -258,10 +211,8 @@ with tab2:
                 )
 
                 if resultado['status'] == 'sucesso':
-                    # Gerar análise visual
                     gerar_analise_visual(valor_investimento, perfil_risco, resultado)
 
-                    # Guardar no histórico
                     st.session_state.historico_chat.append({
                         'tipo': 'analise',
                         'data': datetime.now(),
@@ -271,7 +222,6 @@ with tab2:
                         'resultado': str(resultado)
                     })
 
-                    # Guardar carteira
                     st.session_state.carteiras[st.session_state.cliente_id] = {
                         'valor': valor_investimento,
                         'perfil': perfil_risco,
@@ -285,13 +235,9 @@ with tab2:
             except Exception as e:
                 st.error(f"❌ Erro ao analisar: {str(e)}")
 
-# ============================================================================
-# TAB 3: CHAT COM ASSESSOR
-# ============================================================================
 with tab3:
     st.subheader("💬 Chat com Seu Assessor IA")
 
-    # Inputs
     col1, col2 = st.columns([2, 1])
 
     with col1:
@@ -332,7 +278,6 @@ with tab3:
     if enviar and pergunta:
         with st.spinner("⏳ Processando sua pergunta..."):
             try:
-                # Processar com agente otimizado
                 if valor_chat > 0:
                     resposta = st.session_state.agente_otimizado.processar_pergunta_investimento(
                         pergunta=pergunta,
@@ -341,18 +286,16 @@ with tab3:
                         base_conhecimento=st.session_state.base_conhecimento
                     )
                 else:
-                    resposta = st.session_state.agente_otimizado.processar_pergunta_geral(
+                    resposta = st.session_state.agente_otimizado.processar_pergunta_investimento(
                         pergunta=pergunta,
+                        valor=0.0,
+                        perfil=perfil_chat,
                         base_conhecimento=st.session_state.base_conhecimento
                     )
 
-                # Exibir pergunta
                 st.info(f"**Sua Pergunta:** {pergunta}")
-
-                # Exibir resposta formatada
                 st.markdown(resposta)
 
-                # Guardar no histórico
                 st.session_state.historico_chat.append({
                     'tipo': 'chat',
                     'data': datetime.now(),
@@ -365,7 +308,6 @@ with tab3:
             except Exception as e:
                 st.error(f"❌ Erro ao processar: {str(e)}")
 
-    # Histórico
     if st.session_state.historico_chat:
         chats = [m for m in st.session_state.historico_chat if m['tipo'] == 'chat']
         if chats:
@@ -375,9 +317,6 @@ with tab3:
                 with st.expander(f"🕐 {msg['data'].strftime('%d/%m %H:%M')} - {msg['pergunta'][:50]}..."):
                     st.markdown(msg['resposta'])
 
-# ============================================================================
-# TAB 4: HISTÓRICO
-# ============================================================================
 with tab4:
     st.subheader("📜 Histórico de Operações")
 
@@ -406,9 +345,6 @@ with tab4:
     else:
         st.info("📭 Nenhuma operação registrada ainda.")
 
-# ============================================================================
-# TAB 5: RELATÓRIOS
-# ============================================================================
 with tab5:
     st.subheader("📄 Geração de Relatórios")
 
@@ -460,9 +396,6 @@ with tab5:
     else:
         st.info("ℹ️ Nenhuma carteira analisada ainda")
 
-# ============================================================================
-# TAB 6: SOBRE
-# ============================================================================
 with tab6:
     st.subheader("ℹ️ Sobre o Assessor IA")
 
@@ -470,8 +403,7 @@ with tab6:
     ### 💡 O que é o Assessor IA?
 
     O **Assessor IA** é uma plataforma inteligente de consultoria de investimentos que utiliza
-    inteligência artificial para fornecer recomendações personalizadas baseadas no seu perfil
-    e histórico financeiro.
+    inteligência artificial para fornecer recomendações personalizadas.
 
     ### 🎯 Funcionalidades
 
@@ -480,34 +412,15 @@ with tab6:
     - **💬 Chat Inteligente**: Converse com um assessor IA 24/7 em português claro
     - **📜 Histórico Completo**: Acompanhe todas as suas operações
     - **📄 Relatórios**: Exporte dados em Excel
-    - **🔐 Segurança**: Seus dados são protegidos
 
     ### 🚀 Tecnologias
 
-    - **Streamlit**: Interface web moderna e responsiva
-    - **Ollama + Phi**: IA local e privada
+    - **Streamlit**: Interface web moderna
     - **Plotly**: Gráficos interativos
     - **Pandas**: Manipulação de dados
     - **Python**: Backend robusto
 
-    ### 📊 Recursos Principais
-
-    1. **Análise Visual**: Gráficos de alocação, projeção e cenários
-    2. **Recomendações Inteligentes**: Baseadas em perfil de risco
-    3. **Simulador de Cenários**: Otimista, Base e Pessimista
-    4. **Histórico Detalhado**: Todas as operações registradas
-    5. **Exportação de Dados**: Excel e relatórios
-    6. **Chat em Português**: Respostas claras e objetivas
-
-    ### 📞 Suporte
-
-    Para dúvidas ou sugestões, entre em contato com nosso time.
-
-    ---
-
-    **Versão:** 2.0.0  
-    **Data:** 2026-04-12  
-    **Status:** ✅ Produção
+    **Versão:** 2.0.0 | **Status:** ✅ Produção
     """)
 
     st.divider()
@@ -522,9 +435,6 @@ with tab6:
     with col4:
         st.metric("📈 Versão", "2.0.0")
 
-# ============================================================================
-# RODAPÉ
-# ============================================================================
 st.divider()
 st.markdown("""
 <div style='text-align: center; color: #999; padding: 2rem 0;'>
