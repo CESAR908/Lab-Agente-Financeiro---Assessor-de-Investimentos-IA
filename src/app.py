@@ -142,7 +142,7 @@ with tab1:
                 'Data': msg['data'].strftime('%d/%m'),
                 'Hora': msg['data'].strftime('%H:%M'),
                 'Tipo': msg['tipo'].upper(),
-                'Detalhes': msg.get('pergunta', msg.get('valor', 'N/A'))[:30]
+                'Detalhes': str(msg.get('pergunta', str(msg.get('valor', 'N/A'))))[:30]
             }
             for msg in st.session_state.historico_chat[-10:]
         ])
@@ -326,7 +326,7 @@ with tab4:
                 'Data': msg['data'].strftime('%d/%m/%Y'),
                 'Hora': msg['data'].strftime('%H:%M:%S'),
                 'Tipo': msg['tipo'].upper(),
-                'Detalhes': msg.get('pergunta', msg.get('valor', 'N/A'))[:50]
+                'Detalhes': str(msg.get('pergunta', str(msg.get('valor', 'N/A'))))[:50]
             }
             for msg in st.session_state.historico_chat
         ])
@@ -361,7 +361,7 @@ with tab5:
                     {
                         'Data': msg['data'].strftime('%d/%m/%Y %H:%M:%S'),
                         'Tipo': msg['tipo'],
-                        'Detalhes': msg.get('pergunta', msg.get('valor', 'N/A'))
+                        'Detalhes': str(msg.get('pergunta', str(msg.get('valor', 'N/A'))))
                     }
                     for msg in st.session_state.historico_chat
                 ])
