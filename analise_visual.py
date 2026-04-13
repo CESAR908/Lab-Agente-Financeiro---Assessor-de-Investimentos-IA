@@ -1,7 +1,6 @@
 import streamlit as st
 import pandas as pd
 import plotly.graph_objects as go
-import plotly.express as px
 from datetime import datetime
 
 def gerar_analise_visual(valor_investimento, perfil_risco, resultado):
