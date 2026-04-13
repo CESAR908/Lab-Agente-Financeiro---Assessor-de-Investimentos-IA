@@ -5,7 +5,6 @@ import json
 import plotly.graph_objects as go
 import plotly.express as px
 from io import BytesIO
-import sqlite3
 
 # ⚠️ IMPORTANTE: set_page_config DEVE ser a PRIMEIRA chamada do Streamlit
 st.set_page_config(
@@ -16,6 +15,7 @@ st.set_page_config(
 )
 
 # Agora importar os outros módulos
+from agente_otimizado import AgenteOtimizado
 from agente import AgenteFincanceiro
 from base_conhecimento import BaseConhecimento
 from utils import formatar_moeda
@@ -61,6 +61,7 @@ if not check_login():
 try:
     if 'agente' not in st.session_state:
         st.session_state.agente = AgenteFincanceiro()
+        st.session_state.agente_otimizado = AgenteOtimizado()
         st.session_state.base_conhecimento = BaseConhecimento()
         st.session_state.historico_chat = []
         st.session_state.cliente_id = "CLI001"
@@ -190,17 +191,16 @@ with tab1:
         st.dataframe(df_atividades, use_container_width=True, hide_index=True)
 
         # Gráfico de tipos de operação
-        col1, col2 = st.columns(2)
+        col1, col2 = st.columns([2, 1])
 
         with col1:
-            tipos = pd.DataFrame([
-                {'Tipo': msg['tipo'], 'Quantidade': 1}
-                for msg in st.session_state.historico_chat
-            ]).groupby('Tipo').size()
+            tipos_list = [msg['tipo'] for msg in st.session_state.historico_chat]
+            tipos_df = pd.DataFrame({'Tipo': tipos_list})
+            tipos_count = tipos_df['Tipo'].value_counts()
 
             fig_tipos = go.Figure(data=[go.Pie(
-                labels=tipos.index,
-                values=tipos.values,
+                labels=tipos_count.index,
+                values=tipos_count.values,
                 marker=dict(colors=['#2196F3', '#4CAF50', '#FF9800'])
             )])
             fig_tipos.update_layout(height=300, showlegend=True)
@@ -291,11 +291,28 @@ with tab2:
 with tab3:
     st.subheader("💬 Chat com Seu Assessor IA")
 
-    pergunta = st.text_area(
-        "Faça sua pergunta",
-        placeholder="Digite sua pergunta sobre investimentos, produtos, carteira, etc...",
-        height=100
-    )
+    # Inputs
+    col1, col2 = st.columns([2, 1])
+
+    with col1:
+        pergunta = st.text_area(
+            "Faça sua pergunta",
+            placeholder="Ex: Quero investir 10000 | Qual é o melhor produto? | Como funciona o risco?",
+            height=100
+        )
+
+    with col2:
+        valor_chat = st.number_input(
+            "💰 Valor (opcional)",
+            min_value=0.0,
+            value=0.0,
+            step=100.0
+        )
+
+        perfil_chat = st.selectbox(
+            "🎯 Perfil",
+            ["Conservador", "Moderado", "Agressivo"]
+        )
 
     col1, col2, col3 = st.columns([2, 1, 1])
 
@@ -309,40 +326,54 @@ with tab3:
         exportar = st.button("📥 Exportar", use_container_width=True)
 
     if limpar:
-        st.session_state.historico_chat = []
+        st.session_state.historico_chat = [m for m in st.session_state.historico_chat if m['tipo'] != 'chat']
         st.rerun()
 
     if enviar and pergunta:
         with st.spinner("⏳ Processando sua pergunta..."):
             try:
-                resposta = st.session_state.agente.processar_pergunta(
-                    pergunta=pergunta,
-                    cliente_id=st.session_state.cliente_id,
-                    base_conhecimento=st.session_state.base_conhecimento
-                )
+                # Processar com agente otimizado
+                if valor_chat > 0:
+                    resposta = st.session_state.agente_otimizado.processar_pergunta_investimento(
+                        pergunta=pergunta,
+                        valor=valor_chat,
+                        perfil=perfil_chat,
+                        base_conhecimento=st.session_state.base_conhecimento
+                    )
+                else:
+                    resposta = st.session_state.agente_otimizado.processar_pergunta_geral(
+                        pergunta=pergunta,
+                        base_conhecimento=st.session_state.base_conhecimento
+                    )
 
+                # Exibir pergunta
                 st.info(f"**Sua Pergunta:** {pergunta}")
-                st.success(f"**Resposta:** {resposta}")
 
+                # Exibir resposta formatada
+                st.markdown(resposta)
+
+                # Guardar no histórico
                 st.session_state.historico_chat.append({
                     'tipo': 'chat',
                     'data': datetime.now(),
                     'pergunta': pergunta,
-                    'resposta': resposta
+                    'resposta': resposta,
+                    'valor': valor_chat,
+                    'perfil': perfil_chat
                 })
 
             except Exception as e:
                 st.error(f"❌ Erro ao processar: {str(e)}")
 
+    # Histórico
     if st.session_state.historico_chat:
-        st.markdown("### 📜 Histórico da Conversa")
+        chats = [m for m in st.session_state.historico_chat if m['tipo'] == 'chat']
+        if chats:
+            st.markdown("### 📜 Histórico da Conversa")
 
-        for msg in reversed(st.session_state.historico_chat[-10:]):
-            if msg['tipo'] == 'chat':
-                st.markdown(f"**[{msg['data'].strftime('%d/%m %H:%M:%S')}]**")
-                st.write(f"📝 **Pergunta:** {msg['pergunta']}")
-                st.write(f"💬 **Resposta:** {msg['resposta']}")
-                st.divider()
+            for msg in reversed(chats[-5:]):
+                with st.expander(f"🕐 {msg['data'].strftime('%d/%m %H:%M')} - {msg['pergunta'][:50]}..."):
+                    st.markdown(msg['resposta'])
 
 # ============================================================================
 # TAB 4: HISTÓRICO
@@ -446,7 +477,7 @@ with tab6:
 
     - **📊 Dashboard Executivo**: Visualize suas operações em tempo real
     - **📈 Análise de Carteira**: Análise detalhada com gráficos interativos
-    - **💬 Chat Inteligente**: Converse com um assessor IA 24/7
+    - **💬 Chat Inteligente**: Converse com um assessor IA 24/7 em português claro
     - **📜 Histórico Completo**: Acompanhe todas as suas operações
     - **📄 Relatórios**: Exporte dados em Excel
     - **🔐 Segurança**: Seus dados são protegidos
@@ -466,6 +497,7 @@ with tab6:
     3. **Simulador de Cenários**: Otimista, Base e Pessimista
     4. **Histórico Detalhado**: Todas as operações registradas
     5. **Exportação de Dados**: Excel e relatórios
+    6. **Chat em Português**: Respostas claras e objetivas
 
     ### 📞 Suporte
 
