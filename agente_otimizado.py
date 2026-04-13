@@ -72,10 +72,10 @@ class AgenteOtimizado:
             pass
         return 0.0
 
-    def processar_pergunta_investimento(self, pergunta, valor, perfil, base_conhecimento):
+       def processar_pergunta_investimento(self, pergunta, valor, perfil, base_conhecimento):
         """Processa perguntas sobre investimento de forma clara"""
 
-        pergunta_lower = pergunta.lower()
+        pergunta_lower = pergunta.lower().strip()
 
         # Se valor for 0, tentar extrair da pergunta
         if valor == 0:
@@ -86,7 +86,7 @@ class AgenteOtimizado:
                 valor = 1000.0
 
         # Pergunta sobre valor a investir
-        if 'investir' in pergunta_lower or 'aplicar' in pergunta_lower:
+        if any(palavra in pergunta_lower for palavra in ['investir', 'aplicar', 'quero', 'gostaria', 'preciso']):
             recomendacao = self.gerar_recomendacao_simples(valor, perfil, base_conhecimento)
 
             resposta = f"""
@@ -137,7 +137,7 @@ class AgenteOtimizado:
             return resposta.strip()
 
         # Pergunta sobre produtos
-        elif 'produto' in pergunta_lower or 'fundo' in pergunta_lower:
+        elif any(palavra in pergunta_lower for palavra in ['produto', 'fundo', 'qual', 'quais']):
             produtos = base_conhecimento.listar_produtos()
             resposta = "🏦 **PRODUTOS DISPONÍVEIS:**\n\n"
 
@@ -209,7 +209,7 @@ class AgenteOtimizado:
             return resposta.strip()
 
         # Pergunta sobre rentabilidade
-        elif 'rentabilidade' in pergunta_lower or 'retorno' in pergunta_lower:
+        elif any(palavra in pergunta_lower for palavra in ['rentabilidade', 'retorno', 'ganho', 'lucro']):
             resposta = f"""
 💹 **PROJEÇÃO DE RENTABILIDADE**
 
