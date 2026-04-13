@@ -61,10 +61,20 @@ class AgenteOtimizado:
 
         return recomendacoes.get(perfil, recomendacoes['Moderado'])
 
-    def processar_pergunta_investimento(self, pergunta, valor, perfil, base_conhecimento):
+      def processar_pergunta_investimento(self, pergunta, valor, perfil, base_conhecimento):
         """Processa perguntas sobre investimento de forma clara"""
 
         pergunta_lower = pergunta.lower()
+
+        # Se valor for 0, tentar extrair da pergunta
+        if valor == 0:
+            # Procurar por padrões como "10000", "10 mil", "dez mil"
+            import re
+            numeros = re.findall(r'\d+', pergunta)
+            if numeros:
+                valor = float(numeros[0])
+            else:
+                valor = 1000.0  # valor padrão
 
         # Pergunta sobre valor a investir
         if 'investir' in pergunta_lower or 'aplicar' in pergunta_lower:
