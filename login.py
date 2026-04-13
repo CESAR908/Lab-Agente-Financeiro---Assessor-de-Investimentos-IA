@@ -10,9 +10,13 @@ def show_login():
         layout="centered"
     )
 
-    # CSS para animação do abajur
+    # CSS para animação do abajur (simplificado)
     st.markdown("""
         <style>
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
         .lamp-container {
             display: flex;
             justify-content: center;
@@ -31,15 +35,6 @@ def show_login():
             left: 50%;
             transform: translateX(-50%);
             border-radius: 2px;
-            transition: transform 0.3s ease;
-        }
-
-        .lamp-cord:hover {
-            cursor: grab;
-        }
-
-        .lamp-cord.pulled {
-            transform: translateX(-50%) scaleY(0.7);
         }
 
         .lamp-bulb {
@@ -51,11 +46,6 @@ def show_login():
             top: 140px;
             left: 50%;
             transform: translateX(-50%);
-            box-shadow: 0 0 30px rgba(255, 215, 0, 0.8);
-            transition: box-shadow 0.3s ease;
-        }
-
-        .lamp-bulb.on {
             box-shadow: 0 0 50px rgba(255, 215, 0, 1);
         }
 
@@ -76,18 +66,6 @@ def show_login():
             border-radius: 15px;
             box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
             margin-top: 2rem;
-            animation: slideIn 0.5s ease;
-        }
-
-        @keyframes slideIn {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
         }
 
         .login-title {
@@ -95,48 +73,6 @@ def show_login():
             text-align: center;
             font-size: 2rem;
             margin-bottom: 1.5rem;
-            font-weight: bold;
-        }
-
-        .login-input {
-            width: 100%;
-            padding: 0.8rem;
-            margin: 0.8rem 0;
-            border: none;
-            border-radius: 8px;
-            font-size: 1rem;
-            background: rgba(255, 255, 255, 0.9);
-        }
-
-        .login-button {
-            width: 100%;
-            padding: 0.8rem;
-            margin-top: 1rem;
-            background: linear-gradient(135deg, #FFD700, #FFA500);
-            color: #333;
-            border: none;
-            border-radius: 8px;
-            font-size: 1rem;
-            font-weight: bold;
-            cursor: pointer;
-            transition: transform 0.2s ease;
-        }
-
-        .login-button:hover {
-            transform: scale(1.05);
-        }
-
-        .error-message {
-            color: #FF6B6B;
-            text-align: center;
-            margin-top: 1rem;
-            font-weight: bold;
-        }
-
-        .success-message {
-            color: #51CF66;
-            text-align: center;
-            margin-top: 1rem;
             font-weight: bold;
         }
         </style>
@@ -150,10 +86,12 @@ def show_login():
         st.session_state.show_login_form = False
 
     # Título principal
-    st.markdown("<h1 style='text-align: center; color: #667eea;'>💰 Assessor IA</h1>", 
-                unsafe_allow_html=True)
-    st.markdown("<p style='text-align: center; color: #666;'>Puxe a cordinha do abajur para fazer login</p>", 
-                unsafe_allow_html=True)
+    st.markdown("""
+        <div style='text-align: center;'>
+            <h1 style='color: #667eea;'>💰 Assessor IA</h1>
+            <p style='color: #666;'>Puxe a cordinha do abajur para fazer login</p>
+        </div>
+    """, unsafe_allow_html=True)
 
     # Abajur interativo
     col1, col2, col3 = st.columns([1, 2, 1])
@@ -161,15 +99,14 @@ def show_login():
     with col2:
         st.markdown("""
             <div class="lamp-container">
-                <div class="lamp-cord" id="lampCord"></div>
-                <div class="lamp-bulb on" id="lampBulb"></div>
+                <div class="lamp-cord"></div>
+                <div class="lamp-bulb"></div>
                 <div class="lamp-base"></div>
             </div>
         """, unsafe_allow_html=True)
 
         # Botão para puxar a cordinha
         if st.button("🔽 Puxar Cordinha", key="pull_lamp", use_container_width=True):
-            st.session_state.lamp_pulled = True
             st.session_state.show_login_form = True
             st.rerun()
 
@@ -180,13 +117,13 @@ def show_login():
         st.markdown('<div class="login-title">🔐 Login</div>', unsafe_allow_html=True)
 
         usuario = st.text_input(
-            "Usuário",
+            "👤 Usuário",
             placeholder="Digite seu usuário",
             key="usuario_input"
         )
 
         senha = st.text_input(
-            "Senha",
+            "🔑 Senha",
             placeholder="Digite sua senha",
             type="password",
             key="senha_input"
@@ -195,34 +132,29 @@ def show_login():
         col1, col2 = st.columns(2)
 
         with col1:
-            if st.button("✅ Entrar", use_container_width=True):
+            if st.button("✅ Entrar", use_container_width=True, key="btn_entrar"):
                 if usuario == "2026" and senha == "0000":
                     st.session_state.logged_in = True
-                    st.markdown('<div class="success-message">✅ Login realizado com sucesso!</div>', 
-                               unsafe_allow_html=True)
-                    time.sleep(1.5)
+                    st.success("✅ Login realizado com sucesso!")
+                    time.sleep(1)
                     st.rerun()
                 else:
-                    st.markdown('<div class="error-message">❌ Usuário ou senha incorretos!</div>', 
-                               unsafe_allow_html=True)
+                    st.error("❌ Usuário ou senha incorretos!")
 
         with col2:
-            if st.button("❌ Cancelar", use_container_width=True):
+            if st.button("❌ Cancelar", use_container_width=True, key="btn_cancelar"):
                 st.session_state.show_login_form = False
-                st.session_state.lamp_pulled = False
                 st.rerun()
 
         st.markdown('</div>', unsafe_allow_html=True)
 
     # Dicas de login
     if not st.session_state.show_login_form:
-        st.markdown("""
-            <div style='text-align: center; margin-top: 2rem; color: #999;'>
-            <p><strong>Credenciais de teste:</strong></p>
-            <p>👤 Usuário: <code>2026</code></p>
-            <p>🔑 Senha: <code>0000</code></p>
-            </div>
-        """, unsafe_allow_html=True)
+        st.info("""
+        **Credenciais de teste:**
+        - 👤 Usuário: `2026`
+        - 🔑 Senha: `0000`
+        """)
 
 
 def check_login():
