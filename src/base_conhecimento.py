@@ -193,6 +193,16 @@ class BaseConhecimento:
         except Exception as e:
             return {'erro': str(e)}
 
+    def obter_perfil(self, cliente_id):
+        """Obtém o perfil de risco de um cliente"""
+        try:
+            cliente = self.obter_cliente(cliente_id)
+            if 'erro' in cliente:
+                return 'moderado'
+            return cliente.get('perfil_risco', 'moderado').lower()
+        except:
+            return 'moderado'
+
     def listar_produtos(self):
         """Lista todos os produtos disponíveis"""
         try:
