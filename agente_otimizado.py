@@ -26,7 +26,6 @@ class AgenteOtimizado:
 
     def gerar_recomendacao_simples(self, valor, perfil, base_conhecimento):
         """Gera recomendação simples e clara"""
-
         recomendacoes = {
             'Conservador': {
                 'alocacao': 'Renda Fixa 70% | Ações 20% | Outros 10%',
@@ -59,7 +58,6 @@ class AgenteOtimizado:
                 'horizonte': '5+ anos'
             }
         }
-
         return recomendacoes.get(perfil, recomendacoes['Moderado'])
 
     def extrair_valor_pergunta(self, pergunta):
@@ -72,12 +70,10 @@ class AgenteOtimizado:
             pass
         return 0.0
 
-       def processar_pergunta_investimento(self, pergunta, valor, perfil, base_conhecimento):
+    def processar_pergunta_investimento(self, pergunta, valor, perfil, base_conhecimento):
         """Processa perguntas sobre investimento de forma clara"""
-
         pergunta_lower = pergunta.lower().strip()
 
-        # Se valor for 0, tentar extrair da pergunta
         if valor == 0:
             valor_extraido = self.extrair_valor_pergunta(pergunta)
             if valor_extraido > 0:
@@ -85,7 +81,6 @@ class AgenteOtimizado:
             else:
                 valor = 1000.0
 
-        # Pergunta sobre valor a investir
         if any(palavra in pergunta_lower for palavra in ['investir', 'aplicar', 'quero', 'gostaria', 'preciso']):
             recomendacao = self.gerar_recomendacao_simples(valor, perfil, base_conhecimento)
 
@@ -136,7 +131,6 @@ class AgenteOtimizado:
 """
             return resposta.strip()
 
-        # Pergunta sobre produtos
         elif any(palavra in pergunta_lower for palavra in ['produto', 'fundo', 'qual', 'quais']):
             produtos = base_conhecimento.listar_produtos()
             resposta = "🏦 **PRODUTOS DISPONÍVEIS:**\n\n"
@@ -153,7 +147,6 @@ class AgenteOtimizado:
 """
             return resposta.strip()
 
-        # Pergunta sobre risco
         elif 'risco' in pergunta_lower:
             resposta = f"""
 🎯 **ANÁLISE DE RISCO - PERFIL {perfil.upper()}**
@@ -208,7 +201,6 @@ class AgenteOtimizado:
 """
             return resposta.strip()
 
-        # Pergunta sobre rentabilidade
         elif any(palavra in pergunta_lower for palavra in ['rentabilidade', 'retorno', 'ganho', 'lucro']):
             resposta = f"""
 💹 **PROJEÇÃO DE RENTABILIDADE**
@@ -241,7 +233,6 @@ Ganho: R$ {valor * 0.08:,.2f}
 """
             return resposta.strip()
 
-        # Pergunta genérica
         else:
             resposta = f"""
 📋 **INFORMAÇÕES SOBRE INVESTIMENTO**
@@ -266,7 +257,6 @@ Qual dessas opções você gostaria de explorar?
 
     def processar_pergunta_geral(self, pergunta, base_conhecimento):
         """Processa perguntas gerais sobre investimentos"""
-
         pergunta_lower = pergunta.lower()
 
         if 'cliente' in pergunta_lower:
