@@ -1,4 +1,5 @@
 import json
+import re
 from datetime import datetime
 
 class AgenteOtimizado:
@@ -61,20 +62,28 @@ class AgenteOtimizado:
 
         return recomendacoes.get(perfil, recomendacoes['Moderado'])
 
-      def processar_pergunta_investimento(self, pergunta, valor, perfil, base_conhecimento):
+    def extrair_valor_pergunta(self, pergunta):
+        """Extrai valor numérico da pergunta"""
+        try:
+            numeros = re.findall(r'\d+', pergunta)
+            if numeros:
+                return float(numeros[0])
+        except:
+            pass
+        return 0.0
+
+    def processar_pergunta_investimento(self, pergunta, valor, perfil, base_conhecimento):
         """Processa perguntas sobre investimento de forma clara"""
 
         pergunta_lower = pergunta.lower()
 
         # Se valor for 0, tentar extrair da pergunta
         if valor == 0:
-            # Procurar por padrões como "10000", "10 mil", "dez mil"
-            import re
-            numeros = re.findall(r'\d+', pergunta)
-            if numeros:
-                valor = float(numeros[0])
+            valor_extraido = self.extrair_valor_pergunta(pergunta)
+            if valor_extraido > 0:
+                valor = valor_extraido
             else:
-                valor = 1000.0  # valor padrão
+                valor = 1000.0
 
         # Pergunta sobre valor a investir
         if 'investir' in pergunta_lower or 'aplicar' in pergunta_lower:
