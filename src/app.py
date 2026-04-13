@@ -6,6 +6,10 @@ from agente import AgenteFincanceiro
 from base_conhecimento import BaseConhecimento
 from utils import formatar_moeda
 from login import show_login, check_login
+from patch_dom import apply_dom_patch
+
+# Aplicar patch de DOM
+apply_dom_patch()
 
 # Verificar login
 if not check_login():
