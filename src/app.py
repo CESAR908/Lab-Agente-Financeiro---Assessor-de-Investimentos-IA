@@ -34,22 +34,6 @@ st.markdown("""
         border-radius: 0.5rem;
         margin: 0.5rem 0;
     }
-    .success-alert {
-        background-color: #d4edda;
-        border: 1px solid #c3e6cb;
-        color: #155724;
-        padding: 1rem;
-        border-radius: 0.5rem;
-        margin: 1rem 0;
-    }
-    .error-alert {
-        background-color: #f8d7da;
-        border: 1px solid #f5c6cb;
-        color: #721c24;
-        padding: 1rem;
-        border-radius: 0.5rem;
-        margin: 1rem 0;
-    }
     </style>
 """, unsafe_allow_html=True)
 
@@ -106,15 +90,13 @@ with tab1:
             "Valor a Investir (R$)",
             min_value=100.0,
             value=1000.0,
-            step=100.0,
-            help="Digite o valor que deseja investir"
+            step=100.0
         )
 
     with col2:
         perfil_risco = st.selectbox(
             "Perfil de Risco",
-            ["Conservador", "Moderado", "Agressivo"],
-            help="Escolha seu perfil de investidor"
+            ["Conservador", "Moderado", "Agressivo"]
         )
 
     if st.button("🔍 Analisar Carteira", use_container_width=True, type="primary"):
@@ -127,17 +109,7 @@ with tab1:
                 )
 
                 if resultado['status'] == 'sucesso':
-                    st.markdown('<div class="success-alert">✅ Análise concluída com sucesso!</div>', 
-                               unsafe_allow_html=True)
-
-                    st.markdown("### 📋 Recomendações")
-
-                    recomendacoes = resultado.get('recomendacoes', {})
-                    if isinstance(recomendacoes, dict):
-                        for chave, valor in recomendacoes.items():
-                            st.markdown(f"**{chave}:** {valor}")
-                    else:
-                        st.write(recomendacoes)
+                    st.success("✅ Análise concluída com sucesso!")
 
                     col1, col2, col3 = st.columns(3)
                     with col1:
@@ -147,20 +119,31 @@ with tab1:
                     with col3:
                         st.metric("Status", "✅ Ativo")
 
+                    st.markdown("### 📋 Recomendações")
+
+                    recomendacoes = resultado.get('recomendacoes', {})
+
+                    if isinstance(recomendacoes, dict):
+                        for chave, valor in recomendacoes.items():
+                            if isinstance(valor, (list, dict)):
+                                st.json(valor)
+                            else:
+                                st.write(f"**{chave}:** {valor}")
+                    else:
+                        st.write(recomendacoes)
+
                     st.session_state.historico_chat.append({
                         'tipo': 'analise',
                         'data': datetime.now(),
                         'valor': valor_investimento,
                         'perfil': perfil_risco,
-                        'resultado': recomendacoes
+                        'resultado': str(recomendacoes)
                     })
                 else:
-                    st.markdown(f'<div class="error-alert">❌ Erro: {resultado.get("mensagem", "Erro desconhecido")}</div>', 
-                               unsafe_allow_html=True)
+                    st.error(f"❌ Erro: {resultado.get('mensagem', 'Erro desconhecido')}")
 
             except Exception as e:
-                st.markdown(f'<div class="error-alert">❌ Erro ao analisar: {str(e)}</div>', 
-                           unsafe_allow_html=True)
+                st.error(f"❌ Erro ao analisar: {str(e)}")
 
 # TAB 2: Chat com Assessor
 with tab2:
@@ -169,8 +152,7 @@ with tab2:
     pergunta = st.text_area(
         "Faça sua pergunta",
         placeholder="Digite sua pergunta sobre investimentos...",
-        height=100,
-        help="Faça perguntas sobre suas finanças e investimentos"
+        height=100
     )
 
     col1, col2 = st.columns([3, 1])
@@ -194,10 +176,8 @@ with tab2:
                     base_conhecimento=st.session_state.base_conhecimento
                 )
 
-                st.markdown('<div class="recommendation-box">', unsafe_allow_html=True)
-                st.markdown(f"**Sua Pergunta:** {pergunta}")
-                st.markdown(f"**Resposta:** {resposta}")
-                st.markdown('</div>', unsafe_allow_html=True)
+                st.info(f"**Sua Pergunta:** {pergunta}")
+                st.success(f"**Resposta:** {resposta}")
 
                 st.session_state.historico_chat.append({
                     'tipo': 'chat',
@@ -207,15 +187,15 @@ with tab2:
                 })
 
             except Exception as e:
-                st.markdown(f'<div class="error-alert">❌ Erro ao processar: {str(e)}</div>', 
-                           unsafe_allow_html=True)
+                st.error(f"❌ Erro ao processar: {str(e)}")
 
     if st.session_state.historico_chat:
         st.markdown("### 📜 Histórico da Conversa")
-        for i, msg in enumerate(reversed(st.session_state.historico_chat[-5:])):
+        for msg in reversed(st.session_state.historico_chat[-5:]):
             if msg['tipo'] == 'chat':
-                st.markdown(f"**[{msg['data'].strftime('%H:%M:%S')}] Pergunta:** {msg['pergunta']}")
-                st.markdown(f"**Resposta:** {msg['resposta']}")
+                st.markdown(f"**[{msg['data'].strftime('%H:%M:%S')}]**")
+                st.write(f"📝 **Pergunta:** {msg['pergunta']}")
+                st.write(f"💬 **Resposta:** {msg['resposta']}")
                 st.divider()
 
 # TAB 3: Histórico
