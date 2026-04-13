@@ -66,13 +66,15 @@ tab1, tab2, tab3, tab4 = st.tabs([
 
 # TAB 1: Análise de Carteira
 with tab1:
+    from analise_visual import gerar_analise_visual
+
     st.subheader("📊 Análise de Carteira de Investimentos")
 
     col1, col2 = st.columns(2)
 
     with col1:
         valor_investimento = st.number_input(
-            "Valor a Investir (R$)",
+            "💰 Valor a Investir (R$)",
             min_value=100.0,
             value=1000.0,
             step=100.0
@@ -80,12 +82,12 @@ with tab1:
 
     with col2:
         perfil_risco = st.selectbox(
-            "Perfil de Risco",
+            "🎯 Perfil de Risco",
             ["Conservador", "Moderado", "Agressivo"]
         )
 
     if st.button("🔍 Analisar Carteira", use_container_width=True, type="primary"):
-        with st.spinner("Analisando sua carteira..."):
+        with st.spinner("⏳ Analisando sua carteira..."):
             try:
                 resultado = st.session_state.agente.analisar_carteira(
                     cliente_id=st.session_state.cliente_id,
@@ -94,33 +96,15 @@ with tab1:
                 )
 
                 if resultado['status'] == 'sucesso':
-                    st.success("✅ Análise concluída com sucesso!")
-
-                    col1, col2, col3 = st.columns(3)
-                    with col1:
-                        st.metric("Valor Investimento", formatar_moeda(valor_investimento))
-                    with col2:
-                        st.metric("Perfil", str(resultado.get('perfil', 'N/A')))
-                    with col3:
-                        st.metric("Status", "✅ Ativo")
-
-                    st.markdown("### 📋 Recomendações")
-
-                    recomendacoes = resultado.get('recomendacoes', {})
-
-                    if isinstance(recomendacoes, dict):
-                        st.json(recomendacoes)
-                    elif isinstance(recomendacoes, str):
-                        st.write(recomendacoes)
-                    else:
-                        st.write(str(recomendacoes))
+                    # Gerar análise visual
+                    gerar_analise_visual(valor_investimento, perfil_risco, resultado)
 
                     st.session_state.historico_chat.append({
                         'tipo': 'analise',
                         'data': datetime.now(),
                         'valor': valor_investimento,
                         'perfil': perfil_risco,
-                        'resultado': str(recomendacoes)
+                        'resultado': str(resultado)
                     })
                 else:
                     st.error(f"❌ Erro: {resultado.get('mensagem', 'Erro desconhecido')}")
