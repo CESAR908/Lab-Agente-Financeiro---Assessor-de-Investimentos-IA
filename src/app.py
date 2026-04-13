@@ -2,14 +2,19 @@ import streamlit as st
 import pandas as pd
 from datetime import datetime
 import json
+
+# ⚠️ IMPORTANTE: set_page_config DEVE ser a PRIMEIRA chamada do Streamlit
+st.set_page_config(
+    page_title="Assessor IA",
+    page_icon="💰",
+    layout="wide"
+)
+
+# Agora importar os outros módulos
 from agente import AgenteFincanceiro
 from base_conhecimento import BaseConhecimento
 from utils import formatar_moeda
 from login import show_login, check_login
-from patch_dom import apply_dom_patch
-
-# Aplicar patch de DOM
-apply_dom_patch()
 
 # Verificar login
 if not check_login():
@@ -17,12 +22,6 @@ if not check_login():
     st.stop()
 
 # Se chegou aqui, usuário está logado
-st.set_page_config(
-    page_title="Assessor IA",
-    page_icon="💰",
-    layout="wide"
-)
-
 try:
     if 'agente' not in st.session_state:
         st.session_state.agente = AgenteFincanceiro()
@@ -110,7 +109,6 @@ with tab1:
                     recomendacoes = resultado.get('recomendacoes', {})
 
                     if isinstance(recomendacoes, dict):
-                        # Converter dict para string formatada
                         st.json(recomendacoes)
                     elif isinstance(recomendacoes, str):
                         st.write(recomendacoes)
