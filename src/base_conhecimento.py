@@ -177,6 +177,10 @@ class BaseConhecimento:
             }
         }
 
+    # ========================================================================
+    # MÉTODOS DE CLIENTE
+    # ========================================================================
+
     def listar_clientes(self):
         """Lista todos os clientes cadastrados"""
         try:
@@ -203,6 +207,56 @@ class BaseConhecimento:
         except:
             return 'moderado'
 
+    def buscar_cliente_por_nome(self, nome):
+        """Busca um cliente pelo nome"""
+        try:
+            clientes_encontrados = [c for c in self.clientes if nome.lower() in c['nome'].lower()]
+            return clientes_encontrados
+        except Exception as e:
+            return []
+
+    def adicionar_cliente(self, cliente_data):
+        """Adiciona um novo cliente"""
+        try:
+            novo_cliente = {
+                'id': f"CLI{len(self.clientes) + 1:03d}",
+                'nome': cliente_data.get('nome'),
+                'email': cliente_data.get('email'),
+                'telefone': cliente_data.get('telefone'),
+                'cpf': cliente_data.get('cpf'),
+                'data_cadastro': datetime.now().strftime('%Y-%m-%d'),
+                'patrimonio': cliente_data.get('patrimonio', 0),
+                'perfil_risco': cliente_data.get('perfil_risco', 'moderado')
+            }
+            self.clientes.append(novo_cliente)
+            return {'status': 'sucesso', 'cliente': novo_cliente}
+        except Exception as e:
+            return {'status': 'erro', 'erro': str(e)}
+
+    def atualizar_cliente(self, cliente_id, dados_atualizacao):
+        """Atualiza dados de um cliente"""
+        try:
+            cliente = next((c for c in self.clientes if c['id'] == cliente_id), None)
+            if not cliente:
+                return {'status': 'erro', 'erro': 'Cliente não encontrado'}
+
+            cliente.update(dados_atualizacao)
+            return {'status': 'sucesso', 'cliente': cliente}
+        except Exception as e:
+            return {'status': 'erro', 'erro': str(e)}
+
+    def deletar_cliente(self, cliente_id):
+        """Deleta um cliente"""
+        try:
+            self.clientes = [c for c in self.clientes if c['id'] != cliente_id]
+            return {'status': 'sucesso', 'mensagem': 'Cliente deletado'}
+        except Exception as e:
+            return {'status': 'erro', 'erro': str(e)}
+
+    # ========================================================================
+    # MÉTODOS DE PRODUTO
+    # ========================================================================
+
     def listar_produtos(self):
         """Lista todos os produtos disponíveis"""
         try:
@@ -211,6 +265,10 @@ class BaseConhecimento:
             print(f"Erro ao listar produtos: {str(e)}")
             return []
 
+    def obter_produtos(self):
+        """Obtém todos os produtos (alias para listar_produtos)"""
+        return self.listar_produtos()
+
     def obter_produto(self, produto_id):
         """Obtém informações de um produto específico"""
         try:
@@ -218,6 +276,18 @@ class BaseConhecimento:
             return produto if produto else {'erro': 'Produto não encontrado'}
         except Exception as e:
             return {'erro': str(e)}
+
+    def buscar_produto_por_tipo(self, tipo):
+        """Busca produtos por tipo"""
+        try:
+            produtos_encontrados = [p for p in self.produtos if tipo.lower() in p['tipo'].lower()]
+            return produtos_encontrados
+        except Exception as e:
+            return []
+
+    # ========================================================================
+    # MÉTODOS DE RECOMENDAÇÃO
+    # ========================================================================
 
     def obter_recomendacoes_por_perfil(self, perfil):
         """Obtém as recomendações para um perfil de risco"""
@@ -289,21 +359,9 @@ class BaseConhecimento:
         except Exception as e:
             return {'erro': str(e), 'status': 'erro'}
 
-    def buscar_cliente_por_nome(self, nome):
-        """Busca um cliente pelo nome"""
-        try:
-            clientes_encontrados = [c for c in self.clientes if nome.lower() in c['nome'].lower()]
-            return clientes_encontrados
-        except Exception as e:
-            return []
-
-    def buscar_produto_por_tipo(self, tipo):
-        """Busca produtos por tipo"""
-        try:
-            produtos_encontrados = [p for p in self.produtos if tipo.lower() in p['tipo'].lower()]
-            return produtos_encontrados
-        except Exception as e:
-            return []
+    # ========================================================================
+    # MÉTODOS DE ESTATÍSTICAS
+    # ========================================================================
 
     def obter_estatisticas(self):
         """Obtém estatísticas da base de conhecimento"""
@@ -316,47 +374,29 @@ class BaseConhecimento:
                 'total_produtos': len(self.produtos),
                 'total_patrimonio': total_patrimonio,
                 'patrimonio_medio': patrimonio_medio,
-                'rentabilidade_media_produtos': sum(p['rentabilidade'] for p in self.produtos) / len(self.produtos),
+                'rentabilidade_media_produtos': sum(p['rentabilidade'] for p in self.produtos) / len(self.produtos) if self.produtos else 0,
                 'data_atualizacao': datetime.now().isoformat()
             }
             return stats
         except Exception as e:
             return {'erro': str(e)}
 
-    def adicionar_cliente(self, cliente_data):
-        """Adiciona um novo cliente"""
+    def obter_resumo(self):
+        """Obtém um resumo geral do sistema"""
         try:
-            novo_cliente = {
-                'id': f"CLI{len(self.clientes) + 1:03d}",
-                'nome': cliente_data.get('nome'),
-                'email': cliente_data.get('email'),
-                'telefone': cliente_data.get('telefone'),
-                'cpf': cliente_data.get('cpf'),
-                'data_cadastro': datetime.now().strftime('%Y-%m-%d'),
-                'patrimonio': cliente_data.get('patrimonio', 0),
-                'perfil_risco': cliente_data.get('perfil_risco', 'moderado')
+            stats = self.obter_estatisticas()
+            resumo = {
+                'clientes': len(self.clientes),
+                'produtos': len(self.produtos),
+                'patrimonio_total': stats.get('total_patrimonio', 0),
+                'patrimonio_medio': stats.get('patrimonio_medio', 0),
+                'rentabilidade_media': stats.get('rentabilidade_media_produtos', 0),
+                'perfis': {
+                    'conservador': len([c for c in self.clientes if c.get('perfil_risco', '').lower() == 'conservador']),
+                    'moderado': len([c for c in self.clientes if c.get('perfil_risco', '').lower() == 'moderado']),
+                    'agressivo': len([c for c in self.clientes if c.get('perfil_risco', '').lower() == 'agressivo'])
+                }
             }
-            self.clientes.append(novo_cliente)
-            return {'status': 'sucesso', 'cliente': novo_cliente}
+            return resumo
         except Exception as e:
-            return {'status': 'erro', 'erro': str(e)}
-
-    def atualizar_cliente(self, cliente_id, dados_atualizacao):
-        """Atualiza dados de um cliente"""
-        try:
-            cliente = next((c for c in self.clientes if c['id'] == cliente_id), None)
-            if not cliente:
-                return {'status': 'erro', 'erro': 'Cliente não encontrado'}
-
-            cliente.update(dados_atualizacao)
-            return {'status': 'sucesso', 'cliente': cliente}
-        except Exception as e:
-            return {'status': 'erro', 'erro': str(e)}
-
-    def deletar_cliente(self, cliente_id):
-        """Deleta um cliente"""
-        try:
-            self.clientes = [c for c in self.clientes if c['id'] != cliente_id]
-            return {'status': 'sucesso', 'mensagem': 'Cliente deletado'}
-        except Exception as e:
-            return {'status': 'erro', 'erro': str(e)}
+            return {'erro': str(e)}
