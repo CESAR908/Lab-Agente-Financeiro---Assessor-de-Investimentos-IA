@@ -4,19 +4,12 @@ import time
 def show_login():
     """Exibe a tela de login com animação do abajur"""
 
-    st.set_page_config(
-        page_title="Login - Assessor IA",
-        page_icon="💡",
-        layout="centered"
-    )
+    # NÃO COLOQUE st.set_page_config() AQUI!
+    # Ele já foi configurado no app.py
 
-    # CSS para animação do abajur (simplificado)
+    # CSS para animação do abajur
     st.markdown("""
         <style>
-        body {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        }
-
         .lamp-container {
             display: flex;
             justify-content: center;
