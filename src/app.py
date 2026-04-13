@@ -19,24 +19,6 @@ st.set_page_config(
     layout="wide"
 )
 
-st.markdown("""
-    <style>
-    .recommendation-box {
-        background-color: #e8f4f8;
-        padding: 1.5rem;
-        border-left: 4px solid #0066cc;
-        border-radius: 0.5rem;
-        margin: 1rem 0;
-    }
-    .metric-box {
-        background-color: #f0f2f6;
-        padding: 1rem;
-        border-radius: 0.5rem;
-        margin: 0.5rem 0;
-    }
-    </style>
-""", unsafe_allow_html=True)
-
 try:
     if 'agente' not in st.session_state:
         st.session_state.agente = AgenteFincanceiro()
@@ -115,7 +97,7 @@ with tab1:
                     with col1:
                         st.metric("Valor Investimento", formatar_moeda(valor_investimento))
                     with col2:
-                        st.metric("Perfil", resultado.get('perfil', 'N/A'))
+                        st.metric("Perfil", str(resultado.get('perfil', 'N/A')))
                     with col3:
                         st.metric("Status", "✅ Ativo")
 
@@ -124,13 +106,12 @@ with tab1:
                     recomendacoes = resultado.get('recomendacoes', {})
 
                     if isinstance(recomendacoes, dict):
-                        for chave, valor in recomendacoes.items():
-                            if isinstance(valor, (list, dict)):
-                                st.json(valor)
-                            else:
-                                st.write(f"**{chave}:** {valor}")
-                    else:
+                        # Converter dict para string formatada
+                        st.json(recomendacoes)
+                    elif isinstance(recomendacoes, str):
                         st.write(recomendacoes)
+                    else:
+                        st.write(str(recomendacoes))
 
                     st.session_state.historico_chat.append({
                         'tipo': 'analise',
@@ -216,10 +197,10 @@ with tab3:
 
         col1, col2 = st.columns(2)
         with col1:
-            st.metric("Total de Operações", len(st.session_state.historico_chat))
+            st.metric("Total de Operações", str(len(st.session_state.historico_chat)))
         with col2:
             chats = len([m for m in st.session_state.historico_chat if m['tipo'] == 'chat'])
-            st.metric("Perguntas Realizadas", chats)
+            st.metric("Perguntas Realizadas", str(chats))
     else:
         st.info("📭 Nenhuma operação registrada ainda.")
 
